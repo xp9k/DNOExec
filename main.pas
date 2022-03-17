@@ -371,7 +371,7 @@ var
   NodeData: PApp;
   index: integer;
 begin
-  if cbExecutions.Items.Count > 0 then
+  if cbLinks.Items.Count > 0 then
     begin
       index := cbLinks.ItemIndex;
       NodeData := VST.GetNodeData(SelectedNode);
@@ -1052,8 +1052,6 @@ begin
 end;
 
 procedure TForm1.RunCreateLink(Link: PLink);
-var
-  i: integer;
 begin
   CreateLink(ReplaceEnvs(Link^.Filename), ReplaceEnvs(Link^.TargetName), ReplaceEnvs(Link^.WorkingDirectory));
 end;

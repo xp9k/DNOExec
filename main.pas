@@ -109,7 +109,6 @@ type
     procedure FormResize(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
-    procedure Panel4Resize(Sender: TObject);
     procedure pbLabelClick(Sender: TObject);
     procedure SpeedButton10Click(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
@@ -352,15 +351,6 @@ begin
     end;
 end;
 
-procedure TForm1.Panel4Resize(Sender: TObject);
-begin
-  //edName.Width := Panel4.Width - edName.Left - RIGHT_MARGIN;
-  //edFilename.Width := Panel4.Width - edFilename.Left - RIGHT_MARGIN;
-  //edArguments.Width := Panel4.Width - edArguments.Left - RIGHT_MARGIN;
-  //BevelLinks.Width := Panel4.Width - BevelLinks.Left - RIGHT_MARGIN;
-  //BevelExecutions.Width := Panel4.Width - BevelExecutions.Left - RIGHT_MARGIN;
-end;
-
 procedure TForm1.pbLabelClick(Sender: TObject);
 begin
 
@@ -433,32 +423,20 @@ begin
 end;
 
 procedure TForm1.SpeedButton3Click(Sender: TObject);
-var
-  tmpNode: PVirtualNode;
-  tmpNodeData: PApp;
 begin
   if not Assigned(VST.FocusedNode) then exit;
 
   VST.BeginUpdate;
-  tmpNode := VST.InsertNode(VST.GetNextSibling(VST.FocusedNode), amAddChildLast);
-  tmpNodeData := VST.GetNodeData(tmpNode);
-  tmpNodeData^ := PApp(VST.GetNodeData(VST.FocusedNode))^;
-  VST.DeleteNode(VST.FocusedNode, True);
+  VST.MoveTo(VST.FocusedNode, VST.GetNextSibling(VST.FocusedNode), amAddChildLast, false);
   VST.EndUpdate;
 end;
 
 procedure TForm1.SpeedButton4Click(Sender: TObject);
-var
-  tmpNode: PVirtualNode;
-  tmpNodeData: PApp;
 begin
   if VST.FocusedNode = nil then exit;
 
   VST.BeginUpdate;
-  tmpNode := VST.InsertNode(VST.FocusedNode^.Parent, amInsertBefore);
-  tmpNodeData := VST.GetNodeData(tmpNode);
-  tmpNodeData^ := PApp(VST.GetNodeData(VST.FocusedNode))^;
-  VST.DeleteNode(VST.FocusedNode, True);
+  VST.MoveTo(VST.FocusedNode, VST.FocusedNode^.Parent, amInsertBefore, false);
   VST.EndUpdate;
 end;
 

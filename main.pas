@@ -128,6 +128,8 @@ type
     procedure VSTBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
       CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
+    procedure VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
+      Column: TColumnIndex);
     procedure VSTGetNodeDataSize(Sender: TBaseVirtualTree;
       var NodeDataSize: Integer);
     procedure VSTGetText(Sender: TBaseVirtualTree;
@@ -137,7 +139,6 @@ type
       Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure VSTMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure VSTNodeClick(Sender: TBaseVirtualTree; const HitInfo: THitInfo);
     procedure VSTResize(Sender: TObject);
   private
 
@@ -194,7 +195,7 @@ procedure ExecuteNodes(Node: PVirtualNode; Position: integer);
     _Node := Node;
     while Assigned(_Node) do
       begin
-        if  (_Node^.CheckState = csCheckedNormal) then
+        if  ((_Node^.CheckState = csCheckedNormal) or (_Node^.CheckState = csMixedNormal)) then
           begin
             VST.Selected[_Node] := True;
             App := VST.GetNodeData(_Node);
@@ -480,15 +481,19 @@ var
   NodeData: PApp;
   Node: PVirtualNode;
 begin
-  Node := VST.AddChild(nil);
+  if VST.FocusedNode <> nil then
+    Node := VST.AddChild(VST.FocusedNode^.Parent)
+  else
+    Node := VST.AddChild(nil);
   NodeData := VST.GetNodeData(Node);
   NodeData^.Executions := TList.Create;
   NodeData^.Links := TList.Create;
-  VST.FocusedNode:=Node;
-  SelectedNode:=Node;
+  NodeData^.Name := 'Новое Имя';
+  SelectedNode := Node;
   ClearComponents;
   CheckcbExecutions;
   CheckcbLinks;
+  VST.FocusedNode := Node;
 end;
 
 procedure TForm1.SpeedButton8Click(Sender: TObject);
@@ -532,6 +537,37 @@ begin
   //    TargetCanvas.Brush.Color := clGray;
   //    TargetCanvas.FillRect(CellRect);
   //  end;
+end;
+
+procedure TForm1.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
+  Column: TColumnIndex);
+var
+  NodeData: PApp;
+  i: integer;
+begin
+  ClearComponents;
+  SelectedNode := Node;
+  NodeData := VST.GetNodeData(Node);
+  edName.Text := NodeData^.Name;
+  edVersion.text := NodeData^.Version;
+
+  for i := 0 to NodeData^.Executions.Count - 1 do
+      begin
+           cbExecutions.Items.Add('Команда #' + IntToStr(i + 1));
+      end;
+  if cbExecutions.Items.Count > 0 then cbExecutions.ItemIndex := 0;
+  cbExclusive.Checked := NodeData^.Exclusive;
+  cbChecked.Checked := NodeData^.Checked;
+  cbExecutionsChange(self);
+
+  for i := 0 to NodeData^.Links.Count - 1 do
+      begin
+           cbLinks.Items.Add('Ярлык #' + IntToStr(i + 1));
+      end;
+  if cbLinks.Items.Count > 0 then cbLinks.ItemIndex := 0;
+  cbLinksChange(self);
+  CheckcbExecutions;
+  CheckcbLinks;
 end;
 
 procedure TForm1.VSTGetNodeDataSize(Sender: TBaseVirtualTree;
@@ -593,38 +629,6 @@ begin
        end;
     end;
 end;
-
-procedure TForm1.VSTNodeClick(Sender: TBaseVirtualTree; const HitInfo: THitInfo
-  );
-var
-  NodeData: PApp;
-  i: integer;
-begin
-  ClearComponents;
-  SelectedNode := HitInfo.HitNode;
-  NodeData := VST.GetNodeData(HitInfo.HitNode);
-  edName.Text := NodeData^.Name;
-  edVersion.text := NodeData^.Version;
-
-  for i := 0 to NodeData^.Executions.Count - 1 do
-      begin
-           cbExecutions.Items.Add('Команда #' + IntToStr(i + 1));
-      end;
-  if cbExecutions.Items.Count > 0 then cbExecutions.ItemIndex := 0;
-  cbExclusive.Checked := NodeData^.Exclusive;
-  cbChecked.Checked := NodeData^.Checked;
-  cbExecutionsChange(self);
-
-  for i := 0 to NodeData^.Links.Count - 1 do
-      begin
-           cbLinks.Items.Add('Ярлык #' + IntToStr(i + 1));
-      end;
-  if cbLinks.Items.Count > 0 then cbLinks.ItemIndex := 0;
-  cbLinksChange(self);
-  CheckcbExecutions;
-  CheckcbLinks;
-end;
-
 
 procedure TForm1.VSTResize(Sender: TObject);
 begin

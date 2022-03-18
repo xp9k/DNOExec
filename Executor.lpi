@@ -34,7 +34,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="2">
       <Unit0>
         <Filename Value="Executor.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -46,15 +46,6 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit1>
-      <Unit2>
-        <Filename Value="versionfunctions_unit.pas"/>
-        <IsPartOfProject Value="True"/>
-        <UnitName Value="Versionfunctions_Unit"/>
-      </Unit2>
-      <Unit3>
-        <Filename Value="vinfo.pas"/>
-        <IsPartOfProject Value="True"/>
-      </Unit3>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

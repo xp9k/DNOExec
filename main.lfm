@@ -48,11 +48,11 @@ object Form1: TForm1
     TreeOptions.MiscOptions = [toAcceptOLEDrop, toCheckSupport, toEditable, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
     TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages, toAlwaysHideSelection, toUseBlendedSelection]
     OnBeforeCellPaint = VSTBeforeCellPaint
+    OnFocusChanged = VSTFocusChanged
     OnGetText = VSTGetText
     OnGetNodeDataSize = VSTGetNodeDataSize
     OnInitNode = VSTInitNode
     OnMouseDown = VSTMouseDown
-    OnNodeClick = VSTNodeClick
     OnResize = VSTResize
   end
   object Panel1: TPanel

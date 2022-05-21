@@ -67,6 +67,8 @@ type
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
+    N1: TMenuItem;
     OpenDialog1: TOpenDialog;
     odExecution: TOpenDialog;
     Panel2: TPanel;
@@ -109,6 +111,7 @@ type
     procedure FormResize(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem6Click(Sender: TObject);
     procedure pbLabelClick(Sender: TObject);
     procedure SpeedButton10Click(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
@@ -350,6 +353,20 @@ begin
     begin
       SaveXMLConfig(SaveDialog1.FileName);
     end;
+end;
+
+procedure TForm1.MenuItem6Click(Sender: TObject);
+var
+  ConfigFilename: string;
+begin
+ ConfigFilename := ExtractFileDir(ParamStr(0)) + '\' + 'Config.xml';
+  if FileExists(ConfigFilename) then
+    begin
+    if Application.MessageBox('Файл уже существует. Заменить?', 'Внимание', MB_ICONQUESTION + MB_YESNO) = IDYES then
+      SaveXMLConfig(ConfigFilename);
+    end
+  else
+    SaveXMLConfig(ConfigFilename);
 end;
 
 procedure TForm1.pbLabelClick(Sender: TObject);

@@ -1,27 +1,27 @@
 object Form1: TForm1
-  Left = 1372
-  Height = 621
-  Top = 202
-  Width = 486
+  Left = 644
+  Height = 745
+  Top = 194
+  Width = 583
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'ДНО ИТ'
-  ClientHeight = 621
-  ClientWidth = 486
-  Constraints.MinHeight = 300
-  Constraints.MinWidth = 320
-  DesignTimePPI = 120
+  ClientHeight = 745
+  ClientWidth = 583
+  Constraints.MinHeight = 360
+  Constraints.MinWidth = 384
+  DesignTimePPI = 144
   OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   Position = poScreenCenter
-  LCLVersion = '2.0.12.0'
+  LCLVersion = '2.0.10.0'
   object VST: TVirtualStringTree
     Left = 0
-    Height = 526
+    Height = 631
     Top = 0
-    Width = 320
+    Width = 384
     Align = alClient
-    Constraints.MinWidth = 320
+    Constraints.MinWidth = 384
     DefaultText = 'Node'
     Header.AutoSizeIndex = -1
     Header.Columns = <    
@@ -32,7 +32,7 @@ object Form1: TForm1
         Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coUseCaptionAlignment, coEditable]
         Position = 0
         Text = 'Программа'
-        Width = 200
+        Width = 240
       end    
       item
         Alignment = taRightJustify
@@ -42,8 +42,8 @@ object Form1: TForm1
         Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coFixed, coSmartResize, coAllowFocus, coUseCaptionAlignment, coEditable]
         Position = 1
         Text = 'Версия'
-        Width = 75
       end>
+    ParentFont = False
     TabOrder = 0
     TreeOptions.MiscOptions = [toAcceptOLEDrop, toCheckSupport, toEditable, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
     TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages, toAlwaysHideSelection, toUseBlendedSelection]
@@ -57,32 +57,34 @@ object Form1: TForm1
   end
   object Panel1: TPanel
     Left = 0
-    Height = 95
-    Top = 526
-    Width = 486
+    Height = 114
+    Top = 631
+    Width = 583
     Align = alBottom
     BevelOuter = bvNone
-    ClientHeight = 95
-    ClientWidth = 486
+    ClientHeight = 114
+    ClientWidth = 583
+    ParentFont = False
     TabOrder = 1
     object pbLabel: TLabel
       Left = 0
-      Height = 73
+      Height = 88
       Top = 0
-      Width = 486
+      Width = 583
       Align = alClient
       Alignment = taCenter
       ParentColor = False
+      ParentFont = False
       OnClick = pbLabelClick
     end
     object btInstall: TButton
       Left = 0
-      Height = 73
+      Height = 88
       Top = 0
-      Width = 486
+      Width = 583
       Align = alClient
       Caption = 'Установить'
-      Font.Height = -27
+      Font.Height = -32
       Font.Style = [fsBold]
       OnClick = btInstallClick
       ParentFont = False
@@ -90,11 +92,12 @@ object Form1: TForm1
     end
     object ProgressBar1: TProgressBar
       Left = 0
-      Height = 22
-      Top = 73
-      Width = 486
+      Height = 26
+      Top = 88
+      Width = 583
       Align = alBottom
       ParentColor = False
+      ParentFont = False
       Smooth = True
       Step = 1
       TabOrder = 1
@@ -102,131 +105,144 @@ object Form1: TForm1
     end
   end
   object Panel2: TPanel
-    Left = 33
-    Height = 526
+    Left = 39
+    Height = 631
     Top = 0
-    Width = 453
+    Width = 544
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 526
-    ClientWidth = 453
+    ClientHeight = 631
+    ClientWidth = 544
+    ParentFont = False
     TabOrder = 2
     Visible = False
     object Panel3: TPanel
       Left = 0
-      Height = 526
+      Height = 631
       Top = 0
-      Width = 46
+      Width = 55
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 526
-      ClientWidth = 46
-      Constraints.MinWidth = 46
+      ClientHeight = 631
+      ClientWidth = 55
+      Constraints.MinWidth = 55
+      ParentFont = False
       TabOrder = 0
       object SpeedButton1: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 164
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 197
+        Width = 38
         Images = ImageList1
         ImageIndex = 1
         OnClick = SpeedButton1Click
+        ParentFont = False
       end
       object SpeedButton2: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 272
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 326
+        Width = 38
         Images = ImageList1
         ImageIndex = 0
         OnClick = SpeedButton2Click
+        ParentFont = False
       end
       object SpeedButton3: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 200
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 240
+        Width = 38
         Images = ImageList1
         ImageIndex = 2
         OnClick = SpeedButton3Click
+        ParentFont = False
       end
       object SpeedButton4: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 236
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 283
+        Width = 38
         Images = ImageList1
         ImageIndex = 3
         OnClick = SpeedButton4Click
+        ParentFont = False
       end
       object SpeedButton7: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 8
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 10
+        Width = 38
         Images = ImageList1
         ImageIndex = 6
         OnClick = SpeedButton7Click
+        ParentFont = False
       end
       object SpeedButton8: TSpeedButton
-        Left = 4
-        Height = 32
-        Top = 48
-        Width = 32
+        Left = 5
+        Height = 38
+        Top = 58
+        Width = 38
         Images = ImageList1
         ImageIndex = 5
         OnClick = SpeedButton8Click
+        ParentFont = False
       end
     end
     object Panel4: TScrollBox
-      Left = 46
-      Height = 526
+      Left = 55
+      Height = 631
       Top = 0
-      Width = 407
-      HorzScrollBar.Page = 344
-      VertScrollBar.Page = 522
+      Width = 489
+      HorzScrollBar.Page = 412
+      VertScrollBar.Page = 627
       Align = alClient
-      ClientHeight = 522
-      ClientWidth = 382
-      Constraints.MinWidth = 320
+      ClientHeight = 627
+      ClientWidth = 459
+      Constraints.MinWidth = 384
+      ParentFont = False
       TabOrder = 1
       object PanelApplication: TPanel
         Left = 0
-        Height = 151
+        Height = 181
         Top = 0
-        Width = 382
+        Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 151
-        ClientWidth = 382
+        ClientHeight = 181
+        ClientWidth = 459
+        ParentFont = False
         TabOrder = 0
         object edName: TLabeledEdit
-          Left = 16
-          Height = 28
-          Top = 28
-          Width = 353
+          Left = 19
+          Height = 33
+          Top = 34
+          Width = 424
           Anchors = [akTop, akLeft, akRight]
-          EditLabel.Height = 20
-          EditLabel.Width = 353
+          EditLabel.Height = 25
+          EditLabel.Width = 424
           EditLabel.Caption = 'Название'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 0
         end
         object cbExclusive: TCheckBox
-          Left = 16
-          Height = 24
-          Top = 66
-          Width = 127
+          Left = 19
+          Height = 29
+          Top = 79
+          Width = 152
           Caption = 'Эксклюзивный'
+          ParentFont = False
           TabOrder = 1
         end
         object btSaveApplication: TBitBtn
-          Left = 240
-          Height = 38
-          Top = 108
-          Width = 130
+          Left = 289
+          Height = 46
+          Top = 130
+          Width = 156
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 16
+          BorderSpacing.Right = 19
           Caption = 'Сохранить'
           Glyph.Data = {
             36100000424D3610000000000000360000002800000020000000200000000100
@@ -362,120 +378,133 @@ object Form1: TForm1
           }
           ModalResult = 1
           OnClick = btSaveApplicationClick
+          ParentFont = False
           TabOrder = 2
         end
         object cbChecked: TCheckBox
-          Left = 16
-          Height = 24
-          Top = 93
-          Width = 79
+          Left = 19
+          Height = 29
+          Top = 112
+          Width = 93
           Caption = 'Выбран'
+          ParentFont = False
           TabOrder = 3
         end
         object edVersion: TLabeledEdit
-          Left = 270
-          Height = 28
-          Top = 68
-          Width = 100
+          Left = 325
+          Height = 33
+          Top = 82
+          Width = 120
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 16
-          EditLabel.Height = 20
-          EditLabel.Width = 50
+          BorderSpacing.Right = 19
+          EditLabel.Height = 25
+          EditLabel.Width = 57
           EditLabel.Caption = 'Версия'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
           LabelPosition = lpLeft
+          ParentFont = False
           TabOrder = 4
         end
       end
       object PanelExecutions: TPanel
         Left = 0
-        Height = 192
-        Top = 187
-        Width = 382
+        Height = 230
+        Top = 224
+        Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 192
-        ClientWidth = 382
+        ClientHeight = 230
+        ClientWidth = 459
+        ParentFont = False
         TabOrder = 1
         Visible = False
         object Label1: TLabel
           AnchorSideRight.Control = cbExecutions
-          Left = 117
-          Height = 20
-          Top = 4
-          Width = 62
+          Left = 145
+          Height = 25
+          Top = 5
+          Width = 72
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Caption = 'Команда'
           ParentColor = False
+          ParentFont = False
         end
         object cbExecutions: TComboBox
           AnchorSideRight.Control = SpeedButton5
-          Left = 181
-          Height = 26
+          Left = 219
+          Height = 30
           Top = 2
-          Width = 125
+          Width = 150
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          ItemHeight = 20
+          ItemHeight = 24
           OnChange = cbExecutionsChange
+          ParentFont = False
           Style = csOwnerDrawFixed
           TabOrder = 0
         end
         object SpeedButton5: TSpeedButton
           AnchorSideRight.Control = SpeedButton6
-          Left = 308
-          Height = 30
+          Left = 371
+          Height = 36
           Top = 0
-          Width = 30
+          Width = 36
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Images = ImageList1
           ImageIndex = 6
           OnClick = SpeedButton5Click
+          ParentFont = False
         end
         object SpeedButton6: TSpeedButton
-          Left = 340
-          Height = 30
+          Left = 409
+          Height = 36
           Top = 0
-          Width = 30
+          Width = 36
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 8
+          BorderSpacing.Right = 10
           Images = ImageList1
           ImageIndex = 5
           OnClick = SpeedButton6Click
+          ParentFont = False
         end
         object edFilename: TLabeledEdit
-          Left = 88
-          Height = 28
-          Top = 61
-          Width = 279
+          Left = 106
+          Height = 33
+          Top = 73
+          Width = 335
           Anchors = [akTop, akLeft, akRight]
-          EditLabel.Height = 20
-          EditLabel.Width = 279
+          EditLabel.Height = 25
+          EditLabel.Width = 335
           EditLabel.Caption = 'Файл'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 1
         end
         object edArguments: TLabeledEdit
-          Left = 88
-          Height = 28
-          Top = 117
-          Width = 279
+          Left = 106
+          Height = 33
+          Top = 140
+          Width = 335
           Anchors = [akTop, akLeft, akRight]
-          EditLabel.Height = 20
-          EditLabel.Width = 279
+          EditLabel.Height = 25
+          EditLabel.Width = 335
           EditLabel.Caption = 'Параметры'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 2
         end
         object btSaveExecution: TBitBtn
-          Left = 240
-          Height = 38
-          Top = 152
-          Width = 130
+          Left = 289
+          Height = 46
+          Top = 182
+          Width = 156
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 8
+          BorderSpacing.Right = 10
           Caption = 'Сохранить'
           Glyph.Data = {
             36100000424D3610000000000000360000002800000020000000200000000100
@@ -610,134 +639,148 @@ object Form1: TForm1
             0000000000000000000000000000000000000000000000000000
           }
           OnClick = btSaveExecutionClick
+          ParentFont = False
           TabOrder = 3
         end
         object SpeedButton13: TSpeedButton
-          Left = 55
-          Height = 30
-          Top = 60
-          Width = 30
+          Left = 66
+          Height = 36
+          Top = 72
+          Width = 36
           Images = ImageList1
           ImageIndex = 9
           OnClick = SpeedButton13Click
+          ParentFont = False
         end
         object SpeedButton15: TSpeedButton
           AnchorSideRight.Control = edArguments
-          Left = 56
-          Height = 30
-          Top = 115
-          Width = 30
+          Left = 68
+          Height = 36
+          Top = 138
+          Width = 36
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Images = ImageList1
           ImageIndex = 10
           OnClick = SpeedButton15Click
+          ParentFont = False
         end
       end
       object PanelLinks: TPanel
         Left = 0
-        Height = 244
-        Top = 415
-        Width = 382
+        Height = 293
+        Top = 497
+        Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 244
-        ClientWidth = 382
+        ClientHeight = 293
+        ClientWidth = 459
+        ParentFont = False
         TabOrder = 2
         Visible = False
         object cbLinks: TComboBox
           AnchorSideRight.Control = SpeedButton9
-          Left = 181
-          Height = 26
-          Top = 6
-          Width = 125
+          Left = 219
+          Height = 30
+          Top = 7
+          Width = 150
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          ItemHeight = 20
+          ItemHeight = 24
           OnChange = cbLinksChange
+          ParentFont = False
           Style = csOwnerDrawFixed
           TabOrder = 0
         end
         object Label4: TLabel
           AnchorSideRight.Control = cbLinks
-          Left = 135
-          Height = 20
-          Top = 10
-          Width = 44
+          Left = 164
+          Height = 25
+          Top = 12
+          Width = 53
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Caption = 'Ярлык'
           ParentColor = False
+          ParentFont = False
         end
         object edLinkFilename: TLabeledEdit
-          Left = 57
-          Height = 28
-          Top = 56
-          Width = 310
+          Left = 69
+          Height = 33
+          Top = 67
+          Width = 372
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          EditLabel.Height = 20
-          EditLabel.Width = 310
+          EditLabel.Height = 25
+          EditLabel.Width = 372
           EditLabel.Caption = 'Имя ярлыка'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 1
         end
         object edLinkTargetname: TLabeledEdit
-          Left = 57
-          Height = 28
-          Top = 108
-          Width = 310
+          Left = 69
+          Height = 33
+          Top = 130
+          Width = 372
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          EditLabel.Height = 20
-          EditLabel.Width = 310
+          EditLabel.Height = 25
+          EditLabel.Width = 372
           EditLabel.Caption = 'Ссылка на файл'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 2
         end
         object edLinkWorkDir: TLabeledEdit
-          Left = 57
-          Height = 28
-          Top = 164
-          Width = 313
+          Left = 69
+          Height = 33
+          Top = 197
+          Width = 376
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
-          EditLabel.Height = 20
-          EditLabel.Width = 313
+          EditLabel.Height = 25
+          EditLabel.Width = 376
           EditLabel.Caption = 'Рабочая папка'
           EditLabel.ParentColor = False
+          EditLabel.ParentFont = False
+          ParentFont = False
           TabOrder = 3
         end
         object SpeedButton9: TSpeedButton
           AnchorSideRight.Control = SpeedButton10
-          Left = 308
-          Height = 30
-          Top = 4
-          Width = 30
+          Left = 371
+          Height = 36
+          Top = 5
+          Width = 36
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Images = ImageList1
           ImageIndex = 6
           OnClick = SpeedButton9Click
+          ParentFont = False
         end
         object SpeedButton10: TSpeedButton
-          Left = 340
-          Height = 30
-          Top = 4
-          Width = 30
+          Left = 409
+          Height = 36
+          Top = 5
+          Width = 36
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 8
+          BorderSpacing.Right = 10
           Images = ImageList1
           ImageIndex = 5
           OnClick = SpeedButton10Click
+          ParentFont = False
         end
         object btSaveLink: TBitBtn
-          Left = 240
-          Height = 38
-          Top = 200
-          Width = 130
+          Left = 289
+          Height = 46
+          Top = 240
+          Width = 156
           Anchors = [akTop, akRight]
-          BorderSpacing.Right = 6
+          BorderSpacing.Right = 7
           Caption = 'Сохранить'
           Glyph.Data = {
             36100000424D3610000000000000360000002800000020000000200000000100
@@ -872,106 +915,114 @@ object Form1: TForm1
             0000000000000000000000000000000000000000000000000000
           }
           OnClick = btSaveLinkClick
+          ParentFont = False
           TabOrder = 4
         end
         object SpeedButton14: TSpeedButton
           AnchorSideRight.Control = edLinkFilename
-          Left = 25
-          Height = 30
-          Top = 55
-          Width = 30
+          Left = 31
+          Height = 36
+          Top = 66
+          Width = 36
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 2
           Images = ImageList1
           ImageIndex = 10
           OnClick = SpeedButton14Click
+          ParentFont = False
         end
       end
       object Panel8: TPanel
         Left = 0
-        Height = 36
-        Top = 151
-        Width = 382
+        Height = 43
+        Top = 181
+        Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 36
-        ClientWidth = 382
+        ClientHeight = 43
+        ClientWidth = 459
+        ParentFont = False
         TabOrder = 3
         object Label3: TLabel
-          Left = 16
-          Height = 20
-          Top = 8
-          Width = 65
+          Left = 19
+          Height = 25
+          Top = 10
+          Width = 76
           Caption = 'Команды'
           ParentColor = False
+          ParentFont = False
         end
         object BevelExecutions: TBevel
-          Left = 124
-          Height = 4
-          Top = 18
-          Width = 243
+          Left = 149
+          Height = 5
+          Top = 22
+          Width = 292
           Anchors = [akTop, akLeft, akRight]
         end
         object SpeedButton11: TSpeedButton
-          Left = 88
-          Height = 28
-          Top = 4
-          Width = 29
+          Left = 106
+          Height = 34
+          Top = 5
+          Width = 35
           Flat = True
           Images = ImageList1
           ImageIndex = 7
           OnClick = SpeedButton11Click
+          ParentFont = False
         end
       end
       object Panel9: TPanel
         Left = 0
-        Height = 36
-        Top = 379
-        Width = 382
+        Height = 43
+        Top = 454
+        Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 36
-        ClientWidth = 382
+        ClientHeight = 43
+        ClientWidth = 459
+        ParentFont = False
         TabOrder = 4
         object Label2: TLabel
-          Left = 16
-          Height = 20
-          Top = 8
-          Width = 53
+          Left = 19
+          Height = 25
+          Top = 10
+          Width = 63
           Caption = 'Ярлыки'
           ParentColor = False
+          ParentFont = False
         end
         object BevelLinks: TBevel
-          Left = 124
-          Height = 4
-          Top = 18
-          Width = 243
+          Left = 149
+          Height = 5
+          Top = 22
+          Width = 292
           Anchors = [akTop, akLeft, akRight]
         end
         object SpeedButton12: TSpeedButton
-          Left = 88
-          Height = 28
-          Top = 4
-          Width = 29
+          Left = 106
+          Height = 34
+          Top = 5
+          Width = 35
           Flat = True
           Images = ImageList1
           ImageIndex = 7
           OnClick = SpeedButton12Click
+          ParentFont = False
         end
       end
     end
   end
   object Splitter1: TSplitter
-    Left = 27
-    Height = 526
+    Left = 32
+    Height = 631
     Top = 0
-    Width = 6
+    Width = 7
     Align = alRight
     ResizeAnchor = akRight
   end
   object ImageList1: TImageList
-    Left = 16
-    Top = 44
+    Left = 19
+    Top = 53
     Bitmap = {
       4C690B0000001000000010000000000000000000000000000000000000000707
       06310E0E0D98131312DA131312FA131312FA131312DA0E0E0D98070706310000
@@ -1330,20 +1381,27 @@ object Form1: TForm1
   end
   object SaveDialog1: TSaveDialog
     Filter = 'xml|*.xml'
-    Left = 25
-    Top = 114
+    Left = 30
+    Top = 137
   end
   object MainMenu1: TMainMenu
-    Left = 28
-    Top = 272
+    Left = 36
+    Top = 326
     object MenuItem1: TMenuItem
       Caption = 'Файл'
       object MenuItem2: TMenuItem
         Caption = 'Открыть конфиг'
         OnClick = MenuItem2Click
       end
+      object N1: TMenuItem
+        Caption = '-'
+      end
+      object MenuItem6: TMenuItem
+        Caption = 'Сохранить конфиг по умолчанию'
+        OnClick = MenuItem6Click
+      end
       object MenuItem3: TMenuItem
-        Caption = 'Сохранить конфиг'
+        Caption = 'Сохранить конфиг как...'
         OnClick = MenuItem3Click
       end
     end
@@ -1357,11 +1415,11 @@ object Form1: TForm1
   end
   object OpenDialog1: TOpenDialog
     Filter = 'xml|*.xml'
-    Left = 16
-    Top = 188
+    Left = 19
+    Top = 226
   end
   object odExecution: TOpenDialog
-    Left = 100
-    Top = 188
+    Left = 120
+    Top = 226
   end
 end

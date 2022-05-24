@@ -540,20 +540,32 @@ end;
 procedure TForm1.VSTBeforeCellPaint(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
   CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
+function HasExecutes(App: PApp): boolean;
+var
+  i: integer;
+  Execution: PExecution;
 begin
-  //if VST.GetNodeLevel(Node) = 0 then
-  //  begin
-  //    if Node^.Index mod 2 = 0 then
-  //      begin
-  //        TargetCanvas.Brush.Color := clFuchsia;
-  //        TargetCanvas.FillRect(CellRect);
-  //      end;
-  //  end
-  //else
-  //  begin
-  //    TargetCanvas.Brush.Color := clGray;
-  //    TargetCanvas.FillRect(CellRect);
-  //  end;
+  Result := True;
+  for i := 0 to App^.Executions.Count - 1 do
+    begin
+      Execution := App^.Executions[i];
+      if (not FileExists(ReplaceEnvs(Execution^.Filename))) and (Execution^.Filename.StartsWith('{src}')) then
+        begin
+          Result := false;
+          break;
+        end;
+    end;
+end;
+var
+  NodeData: PApp;
+begin
+  Node := VST.GetNodeData(Node);
+  if not HasExecutes(NodeData) then
+    begin
+      TargetCanvas.Brush.Color := clRed;
+      TargetCanvas.FillRect(CellRect);
+      TargetCanvas.Font.Style:=[fsStrikeOut];
+    end;
 end;
 
 procedure TForm1.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;

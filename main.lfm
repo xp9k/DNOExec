@@ -1,7 +1,7 @@
-object Form1: TForm1
-  Left = 644
+object frmMain: TfrmMain
+  Left = 1188
   Height = 745
-  Top = 194
+  Top = 660
   Width = 583
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'ДНО ИТ (by Яр)'
@@ -75,7 +75,6 @@ object Form1: TForm1
       Alignment = taCenter
       ParentColor = False
       ParentFont = False
-      OnClick = pbLabelClick
     end
     object btInstall: TButton
       Left = 0
@@ -1386,7 +1385,7 @@ object Form1: TForm1
   end
   object MainMenu1: TMainMenu
     Left = 36
-    Top = 326
+    Top = 324
     object MenuItem1: TMenuItem
       Caption = 'Файл'
       object MenuItem2: TMenuItem
@@ -1407,9 +1406,9 @@ object Form1: TForm1
     end
     object MenuItem4: TMenuItem
       Caption = 'Инструменты'
-      Visible = False
       object MenuItem5: TMenuItem
         Caption = 'Скачать Visual Studio'
+        OnClick = MenuItem5Click
       end
     end
   end

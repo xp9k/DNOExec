@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, WIndows, Dom, XMLRead,
-  XMLWrite, Process, ShlObj, ActiveX, ComObj;
+  XMLWrite, Process, ShlObj, ActiveX, ComObj, uVS;
 
 type
 
@@ -36,9 +36,9 @@ type
     Links: TList;
   end;
 
-  { TForm1 }
+  { TfrmMain }
 
-  TForm1 = class(TForm)
+  TfrmMain = class(TForm)
     BevelExecutions: TBevel;
     BevelLinks: TBevel;
     btInstall: TButton;
@@ -111,8 +111,8 @@ type
     procedure FormResize(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
+    procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
-    procedure pbLabelClick(Sender: TObject);
     procedure SpeedButton10Click(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
     procedure SpeedButton12Click(Sender: TObject);
@@ -171,25 +171,25 @@ const
   CONFIG_PANEL_WIDTH = 450;
 
 var
-  Form1: TForm1;
+  frmMain: TfrmMain;
 
 implementation
 
 {$R *.lfm}
 
-{ TForm1 }
+{ TfrmMain }
 
 function MyBoolToStr(Val: Boolean): string;
 begin
   if val then result := 'True' else Result := 'False';
 end;
 
-procedure TForm1.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
 
 end;
 
-procedure TForm1.btInstallClick(Sender: TObject);
+procedure TfrmMain.btInstallClick(Sender: TObject);
 procedure ExecuteNodes(Node: PVirtualNode; Position: integer);
   var
     _Node: PVirtualNode;
@@ -229,7 +229,7 @@ begin
   pbLabel.Caption:= 'Установка завершена';
 end;
 
-procedure TForm1.btSaveLinkClick(Sender: TObject);
+procedure TfrmMain.btSaveLinkClick(Sender: TObject);
 var
   NodeData: PApp;
   Link: PLink;
@@ -248,7 +248,7 @@ begin
     end;
 end;
 
-procedure TForm1.cbExecutionsChange(Sender: TObject);
+procedure TfrmMain.cbExecutionsChange(Sender: TObject);
 var
   NodeData: PApp;
   Execution: PExecution;
@@ -263,7 +263,7 @@ begin
   CheckcbExecutions;
 end;
 
-procedure TForm1.cbLinksChange(Sender: TObject);
+procedure TfrmMain.cbLinksChange(Sender: TObject);
 var
   NodeData: PApp;
   Link: PLink;
@@ -278,7 +278,7 @@ begin
     end;
 end;
 
-procedure TForm1.btSaveApplicationClick(Sender: TObject);
+procedure TfrmMain.btSaveApplicationClick(Sender: TObject);
 var
   NodeData: PApp;
 begin
@@ -297,7 +297,7 @@ begin
   VST.EndUpdate;
 end;
 
-procedure TForm1.btSaveExecutionClick(Sender: TObject);
+procedure TfrmMain.btSaveExecutionClick(Sender: TObject);
 var
   NodeData: PApp;
   Execution: PExecution;
@@ -315,7 +315,7 @@ begin
     end;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
+procedure TfrmMain.FormCreate(Sender: TObject);
 var
   ConfigFilename: string;
 begin
@@ -332,12 +332,12 @@ begin
  CheckcbLinks;
 end;
 
-procedure TForm1.FormResize(Sender: TObject);
+procedure TfrmMain.FormResize(Sender: TObject);
 begin
   VST.Header.Columns[0].Width := VST.ClientWidth - VST.Header.Columns[1].Width - 20;
 end;
 
-procedure TForm1.MenuItem2Click(Sender: TObject);
+procedure TfrmMain.MenuItem2Click(Sender: TObject);
 begin
   if OpenDialog1.Execute then
     begin
@@ -347,7 +347,7 @@ begin
     end;
 end;
 
-procedure TForm1.MenuItem3Click(Sender: TObject);
+procedure TfrmMain.MenuItem3Click(Sender: TObject);
 begin
   if SaveDialog1.Execute then
     begin
@@ -355,7 +355,12 @@ begin
     end;
 end;
 
-procedure TForm1.MenuItem6Click(Sender: TObject);
+procedure TfrmMain.MenuItem5Click(Sender: TObject);
+begin
+  frmVS.ShowModal;
+end;
+
+procedure TfrmMain.MenuItem6Click(Sender: TObject);
 var
   ConfigFilename: string;
 begin
@@ -369,12 +374,8 @@ begin
     SaveXMLConfig(ConfigFilename);
 end;
 
-procedure TForm1.pbLabelClick(Sender: TObject);
-begin
 
-end;
-
-procedure TForm1.SpeedButton10Click(Sender: TObject);
+procedure TfrmMain.SpeedButton10Click(Sender: TObject);
 var
   NodeData: PApp;
   index: integer;
@@ -395,19 +396,19 @@ begin
   CheckcbLinks;
 end;
 
-procedure TForm1.SpeedButton11Click(Sender: TObject);
+procedure TfrmMain.SpeedButton11Click(Sender: TObject);
 begin
   PanelExecutions.Visible := not PanelExecutions.Visible;
   if PanelExecutions.Visible then SpeedButton11.ImageIndex := 8 else SpeedButton11.ImageIndex := 7;
 end;
 
-procedure TForm1.SpeedButton12Click(Sender: TObject);
+procedure TfrmMain.SpeedButton12Click(Sender: TObject);
 begin
   PanelLinks.Visible := not PanelLinks.Visible;
   if PanelLinks.Visible then SpeedButton12.ImageIndex := 8 else SpeedButton12.ImageIndex := 7;
 end;
 
-procedure TForm1.SpeedButton13Click(Sender: TObject);
+procedure TfrmMain.SpeedButton13Click(Sender: TObject);
 var
   Filename: string;
 begin
@@ -420,27 +421,27 @@ begin
     end;
 end;
 
-procedure TForm1.SpeedButton14Click(Sender: TObject);
+procedure TfrmMain.SpeedButton14Click(Sender: TObject);
 begin
   ShowMessage('Ярлык будет помещен на рабочий стол');
 end;
 
-procedure TForm1.SpeedButton15Click(Sender: TObject);
+procedure TfrmMain.SpeedButton15Click(Sender: TObject);
 begin
      ShowArgumentsHelp;
 end;
 
-procedure TForm1.SpeedButton1Click(Sender: TObject);
+procedure TfrmMain.SpeedButton1Click(Sender: TObject);
 begin
   VST.MoveTo(VST.FocusedNode, VST.GetPreviousSibling(VST.FocusedNode), amInsertBefore, false);
 end;
 
-procedure TForm1.SpeedButton2Click(Sender: TObject);
+procedure TfrmMain.SpeedButton2Click(Sender: TObject);
 begin
   VST.MoveTo(VST.FocusedNode, VST.GetNextSibling(VST.FocusedNode), amInsertAfter, false);
 end;
 
-procedure TForm1.SpeedButton3Click(Sender: TObject);
+procedure TfrmMain.SpeedButton3Click(Sender: TObject);
 begin
   if not Assigned(VST.FocusedNode) then exit;
 
@@ -449,7 +450,7 @@ begin
   VST.EndUpdate;
 end;
 
-procedure TForm1.SpeedButton4Click(Sender: TObject);
+procedure TfrmMain.SpeedButton4Click(Sender: TObject);
 begin
   if VST.FocusedNode = nil then exit;
 
@@ -458,7 +459,7 @@ begin
   VST.EndUpdate;
 end;
 
-procedure TForm1.SpeedButton5Click(Sender: TObject);
+procedure TfrmMain.SpeedButton5Click(Sender: TObject);
 var
   NodeData: PApp;
   Execution: PExecution;
@@ -472,7 +473,7 @@ begin
   cbExecutionsChange(self);
 end;
 
-procedure TForm1.SpeedButton6Click(Sender: TObject);
+procedure TfrmMain.SpeedButton6Click(Sender: TObject);
 var
   NodeData: PApp;
   index: integer;
@@ -493,7 +494,7 @@ begin
   CheckcbExecutions;
 end;
 
-procedure TForm1.SpeedButton7Click(Sender: TObject);
+procedure TfrmMain.SpeedButton7Click(Sender: TObject);
 var
   NodeData: PApp;
   Node: PVirtualNode;
@@ -513,7 +514,7 @@ begin
   VST.FocusedNode := Node;
 end;
 
-procedure TForm1.SpeedButton8Click(Sender: TObject);
+procedure TfrmMain.SpeedButton8Click(Sender: TObject);
 begin
   VST.DeleteNode(VST.FocusedNode);
   ClearComponents;
@@ -522,7 +523,7 @@ begin
   CheckcbLinks;
 end;
 
-procedure TForm1.SpeedButton9Click(Sender: TObject);
+procedure TfrmMain.SpeedButton9Click(Sender: TObject);
 var
   NodeData: PApp;
   Link: PLink;
@@ -537,7 +538,7 @@ begin
   CheckcbLinks;
 end;
 
-procedure TForm1.VSTBeforeCellPaint(Sender: TBaseVirtualTree;
+procedure TfrmMain.VSTBeforeCellPaint(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
   CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
 function HasExecutes(App: PApp): boolean;
@@ -568,7 +569,7 @@ begin
     end;
 end;
 
-procedure TForm1.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
+procedure TfrmMain.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
   Column: TColumnIndex);
 var
   NodeData: PApp;
@@ -577,6 +578,8 @@ begin
   ClearComponents;
   SelectedNode := Node;
   NodeData := VST.GetNodeData(Node);
+  if NodeData = nil then exit;
+
   edName.Text := NodeData^.Name;
   edVersion.text := NodeData^.Version;
 
@@ -599,14 +602,14 @@ begin
   CheckcbLinks;
 end;
 
-procedure TForm1.VSTGetNodeDataSize(Sender: TBaseVirtualTree;
+procedure TfrmMain.VSTGetNodeDataSize(Sender: TBaseVirtualTree;
   var NodeDataSize: Integer);
 begin
   NodeDataSize := SizeOf(TApp);
 end;
 
 
-procedure TForm1.VSTGetText(Sender: TBaseVirtualTree;
+procedure TfrmMain.VSTGetText(Sender: TBaseVirtualTree;
   Node: PVirtualNode; Column: TColumnIndex; TextType: TVSTTextType;
   var CellText: String);
 var
@@ -625,7 +628,7 @@ begin
   end;
 end;
 
-procedure TForm1.VSTInitNode(Sender: TBaseVirtualTree;
+procedure TfrmMain.VSTInitNode(Sender: TBaseVirtualTree;
   ParentNode, Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
 var
   App: PApp;
@@ -640,7 +643,7 @@ begin
   if App^.Checked then Node^.CheckState := csCheckedNormal;
 end;
 
-procedure TForm1.VSTMouseDown(Sender: TObject; Button: TMouseButton;
+procedure TfrmMain.VSTMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Integer);
 begin
   if Button = mbRight then
@@ -648,23 +651,23 @@ begin
      Panel2.Visible := not Panel2.Visible;
      if Panel2.Visible then
        begin
-        Form1.Width := Form1.Width + Panel2.Width;
-        Form1.Menu := MainMenu1;
+        frmMain.Width := frmMain.Width + Panel2.Width;
+        frmMain.Menu := MainMenu1;
        end
      else
        begin
-        Form1.Width := Form1.Width - Panel2.Width;
-        Form1.Menu := nil;
+        frmMain.Width := frmMain.Width - Panel2.Width;
+        frmMain.Menu := nil;
        end;
     end;
 end;
 
-procedure TForm1.VSTResize(Sender: TObject);
+procedure TfrmMain.VSTResize(Sender: TObject);
 begin
   FormResize(self);
 end;
 
-function TForm1.GetAppVersionStr(Filename: string): string;
+function TfrmMain.GetAppVersionStr(Filename: string): string;
 var
   Rec: Cardinal;
 begin
@@ -675,7 +678,7 @@ begin
     Result := '';
 end;
 
-procedure TForm1.CreateLink(Filename, TargetName, WorkingDirectory: string);
+procedure TfrmMain.CreateLink(Filename, TargetName, WorkingDirectory: string);
 var
   IObject : IUnknown;
   ISLink : IShellLink;
@@ -694,7 +697,7 @@ begin
     end
 end;
 
-function TForm1.GetDesktopDir: string;
+function TfrmMain.GetDesktopDir: string;
 var
  dt: array [0..266] of char;
 begin
@@ -702,7 +705,7 @@ begin
   result := dt;
 end;
 
-procedure TForm1.LoadXMLConfig(Filename: string);
+procedure TfrmMain.LoadXMLConfig(Filename: string);
 var
   Doc: TXMLDocument;
 begin
@@ -715,7 +718,7 @@ begin
   end;
 end;
 
-procedure TForm1.SaveXMLConfig(Filename: string);
+procedure TfrmMain.SaveXMLConfig(Filename: string);
 var
   Doc: TXMLDocument;
   Node: PVirtualNode;
@@ -732,7 +735,7 @@ begin
     RootNode.Attributes.SetNamedItem(Attribute);
 
     Attribute := Doc.CreateAttribute('Height');
-    Attribute.Value := IntToStr(Form1.Height - MainMenu1.Height);
+    Attribute.Value := IntToStr(frmMain.Height - MainMenu1.Height);
     RootNode.Attributes.SetNamedItem(Attribute);
 
     Node := VST.GetFirst;
@@ -745,7 +748,7 @@ begin
   end;
 end;
 
-procedure TForm1.LoadNodes(XMLNode: TDOMNode; VSTParentNode: PVirtualNode);
+procedure TfrmMain.LoadNodes(XMLNode: TDOMNode; VSTParentNode: PVirtualNode);
   function GetNodeAttribute(Node: TDOMNode; Attribute: string): Variant;
   var
     NodeAttribute: TDOMNode;
@@ -809,9 +812,9 @@ begin
   if XMLNode.NodeName = 'Config' then
     begin
      TryStrToInt(GetNodeAttribute(XMLNode, 'Width'), value);
-     Form1.Width:=value;
+     frmMain.Width:=value;
      TryStrToInt(GetNodeAttribute(XMLNode, 'Height'), value);
-     Form1.Height:=value;
+     frmMain.Height:=value;
     end;
 
   For i := 0 to XMLNode.ChildNodes.Count - 1 do
@@ -843,7 +846,7 @@ begin
   VST.EndUpdate;
 end;
 
-procedure TForm1.SaveNodes(Doc: TXMLDocument; Node: PVirtualNode; XMLNode: TDOMNode);
+procedure TfrmMain.SaveNodes(Doc: TXMLDocument; Node: PVirtualNode; XMLNode: TDOMNode);
   function GetExecutionXMLNode(Doc: TXMLDocument; Execution: PExecution): TDOMNode;
   var
     NodeData: PApp;
@@ -929,7 +932,7 @@ begin
     end;
 end;
 
-function TForm1.InsertNodes(ParentNode: PVirtualNode; App: PApp): PVirtualNode;
+function TfrmMain.InsertNodes(ParentNode: PVirtualNode; App: PApp): PVirtualNode;
 var
  Node: PVirtualNode;
  NodeData: PApp;
@@ -940,7 +943,7 @@ begin
   Result := Node;
 end;
 
-procedure TForm1.RunExecution(Execution: PExecution);
+procedure TfrmMain.RunExecution(Execution: PExecution);
 function isQuottedStr(StrToCheck: string): boolean;
 var
  len: integer;
@@ -998,7 +1001,7 @@ begin
     ShowMessage('Файл не найден: ' + Execution^.Filename);
 end;
 
-procedure TForm1.RunExecutionByProcess(Execution: PExecution);
+procedure TfrmMain.RunExecutionByProcess(Execution: PExecution);
 function SystemPath: string;
 begin
     SetLength(Result, MAX_PATH);
@@ -1046,7 +1049,7 @@ begin
   AProcess.Free;
 end;
 
-procedure TForm1.RunApplication(Application: PApp);
+procedure TfrmMain.RunApplication(Application: PApp);
 var
   i: integer;
 begin
@@ -1062,12 +1065,12 @@ begin
     end;
 end;
 
-procedure TForm1.RunCreateLink(Link: PLink);
+procedure TfrmMain.RunCreateLink(Link: PLink);
 begin
   CreateLink(ReplaceEnvs(Link^.Filename), ReplaceEnvs(Link^.TargetName), ReplaceEnvs(Link^.WorkingDirectory));
 end;
 
-function TForm1.ReplaceEnvs(InputString: string): string;
+function TfrmMain.ReplaceEnvs(InputString: string): string;
 var
  dt: string;
 begin
@@ -1080,7 +1083,7 @@ begin
   Result := ReplaceStr(Result, '{dt}', dt);
 end;
 
-procedure TForm1.ClearComponents;
+procedure TfrmMain.ClearComponents;
 begin
   edName.Text:='';
   edVersion.Text:='';
@@ -1095,7 +1098,7 @@ begin
   edLinkWorkDir.Text:='';
 end;
 
-procedure TForm1.ShowArgumentsHelp;
+procedure TfrmMain.ShowArgumentsHelp;
 var
  info: string;
 begin
@@ -1105,14 +1108,14 @@ begin
  ShowMessage(info);
 end;
 
-procedure TForm1.CheckcbExecutions;
+procedure TfrmMain.CheckcbExecutions;
 begin
   edFilename.Enabled := cbExecutions.Items.Count > 0;
   edArguments.Enabled := cbExecutions.Items.Count > 0;
   btSaveExecution.Enabled := cbExecutions.Items.Count > 0;
 end;
 
-procedure TForm1.CheckcbLinks;
+procedure TfrmMain.CheckcbLinks;
 begin
   edLinkFilename.Enabled := cbLinks.Items.Count > 0;
   edLinkTargetname.Enabled := cbLinks.Items.Count > 0;

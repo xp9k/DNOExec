@@ -1,0 +1,455 @@
+object frmVS: TfrmVS
+  Left = 612
+  Height = 707
+  Top = 584
+  Width = 544
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
+  Caption = 'Скачивание Vusial Studio'
+  ClientHeight = 707
+  ClientWidth = 544
+  DesignTimePPI = 144
+  Position = poScreenCenter
+  LCLVersion = '2.0.10.0'
+  object edVSexe: TLabeledEdit
+    Left = 10
+    Height = 33
+    Top = 29
+    Width = 490
+    EditLabel.Height = 25
+    EditLabel.Width = 490
+    EditLabel.Caption = 'Путь к файлу установки (vs_Community.exe)'
+    EditLabel.ParentColor = False
+    EditLabel.ParentFont = False
+    ParentFont = False
+    TabOrder = 0
+  end
+  object edSaveDir: TLabeledEdit
+    Left = 10
+    Height = 33
+    Top = 610
+    Width = 490
+    EditLabel.Height = 25
+    EditLabel.Width = 490
+    EditLabel.Caption = 'Путь к папке сохранения'
+    EditLabel.ParentColor = False
+    EditLabel.ParentFont = False
+    ParentFont = False
+    TabOrder = 1
+  end
+  object SpeedButton1: TSpeedButton
+    Left = 500
+    Height = 34
+    Top = 29
+    Width = 35
+    Images = ImageList1
+    ImageIndex = 0
+    OnClick = SpeedButton1Click
+    ParentFont = False
+  end
+  object SpeedButton2: TSpeedButton
+    Left = 500
+    Height = 34
+    Top = 610
+    Width = 35
+    Images = ImageList1
+    ImageIndex = 0
+    OnClick = SpeedButton2Click
+    ParentFont = False
+  end
+  object Button1: TButton
+    Left = 422
+    Height = 37
+    Top = 653
+    Width = 113
+    Caption = 'Скачать'
+    OnClick = Button1Click
+    ParentFont = False
+    TabOrder = 2
+  end
+  object sbComponents: TScrollBox
+    Left = 10
+    Height = 317
+    Top = 106
+    Width = 528
+    HorzScrollBar.Page = 477
+    VertScrollBar.Page = 313
+    ClientHeight = 313
+    ClientWidth = 498
+    ParentFont = False
+    TabOrder = 3
+    object CheckBox1: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка для Azure'
+      Top = 43
+      Width = 339
+      Caption = 'Microsoft.VisualStudio.Workload.Azure'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+    object CheckBox2: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Хранение и обработка данных'
+      Top = 82
+      Width = 331
+      Caption = 'Microsoft.VisualStudio.Workload.Data'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+    object CheckBox3: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Приложения для обработки и анализа данных и аналитические приложения'
+      Top = 120
+      Width = 389
+      Caption = 'Microsoft.VisualStudio.Workload.DataScience'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+    end
+    object CheckBox4: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка классических приложений .NET'
+      Top = 158
+      Width = 436
+      Caption = 'Microsoft.VisualStudio.Workload.ManagedDesktop'
+      Checked = True
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      State = cbChecked
+      TabOrder = 3
+    end
+    object CheckBox5: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка игр с помощью Unity'
+      Top = 197
+      Width = 415
+      Caption = 'Microsoft.VisualStudio.Workload.ManagedGame'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 4
+    end
+    object CheckBox6: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка приложений для Linux на C++'
+      Top = 235
+      Width = 417
+      Caption = 'Microsoft.VisualStudio.Workload.NativeCrossPlat'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+    end
+    object CheckBox7: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка классических приложений на C++'
+      Top = 274
+      Width = 411
+      Caption = 'Microsoft.VisualStudio.Workload.NativeDesktop'
+      Checked = True
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      State = cbChecked
+      TabOrder = 6
+    end
+    object CheckBox8: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка игр на C++'
+      Top = 312
+      Width = 390
+      Caption = 'Microsoft.VisualStudio.Workload.NativeGame'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 7
+    end
+    object CheckBox9: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка мобильных приложений на C++'
+      Top = 350
+      Width = 399
+      Caption = 'Microsoft.VisualStudio.Workload.NativeMobile'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 8
+    end
+    object CheckBox10: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка мобильных приложений на платформе .NET'
+      Top = 389
+      Width = 395
+      Caption = 'Microsoft.VisualStudio.Workload.NetCrossPlat'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 9
+    end
+    object CheckBox11: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'ASP.NET и веб-разработка'
+      Top = 427
+      Width = 359
+      Caption = 'Microsoft.VisualStudio.Workload.NetWeb'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 10
+    end
+    object CheckBox12: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка Node.js'
+      Top = 466
+      Width = 338
+      Caption = 'Microsoft.VisualStudio.Workload.Node'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 11
+    end
+    object CheckBox13: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка для Office и SharePoint'
+      Top = 504
+      Width = 341
+      Caption = 'Microsoft.VisualStudio.Workload.Office'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 12
+    end
+    object CheckBox14: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка на Python'
+      Top = 542
+      Width = 350
+      Caption = 'Microsoft.VisualStudio.Workload.Python'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 13
+    end
+    object CheckBox15: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка с помощью универсальной платформы Windows'
+      Top = 581
+      Width = 365
+      Caption = 'Microsoft.VisualStudio.Workload.Universal'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 14
+    end
+    object CheckBox16: TCheckBox
+      Left = 10
+      Height = 29
+      Hint = 'Разработка расширений Visual Studio'
+      Top = 619
+      Width = 467
+      Caption = 'Microsoft.VisualStudio.Workload.VisualStudioExtension'
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 15
+    end
+    object CheckBox17: TCheckBox
+      Left = 10
+      Height = 29
+      Top = 5
+      Width = 57
+      Caption = 'Все'
+      OnChange = CheckBox17Change
+      ParentFont = False
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 16
+    end
+  end
+  object Label1: TLabel
+    Left = 10
+    Height = 25
+    Top = 77
+    Width = 104
+    Caption = 'Компоненты'
+    ParentColor = False
+    ParentFont = False
+  end
+  object RadioButton1: TRadioButton
+    Left = 10
+    Height = 29
+    Top = 432
+    Width = 169
+    Caption = '--includeOptional'
+    ParentFont = False
+    TabOrder = 4
+  end
+  object RadioButton2: TRadioButton
+    Left = 10
+    Height = 29
+    Top = 466
+    Width = 221
+    Caption = '--includeRecommended'
+    Checked = True
+    ParentFont = False
+    TabOrder = 5
+    TabStop = True
+  end
+  object CheckBox18: TCheckBox
+    Left = 10
+    Height = 29
+    Top = 504
+    Width = 78
+    Caption = '--lang'
+    Checked = True
+    ParentFont = False
+    State = cbChecked
+    TabOrder = 6
+  end
+  object CheckBox19: TCheckBox
+    Left = 10
+    Height = 29
+    Top = 542
+    Width = 98
+    Caption = '--noweb'
+    ParentFont = False
+    TabOrder = 7
+  end
+  object CheckBox20: TCheckBox
+    Left = 302
+    Height = 29
+    Top = 504
+    Width = 184
+    Caption = '--noUpdateInstaller'
+    ParentFont = False
+    TabOrder = 8
+  end
+  object CheckBox21: TCheckBox
+    Left = 302
+    Height = 29
+    Top = 542
+    Width = 102
+    Caption = '--passive'
+    ParentFont = False
+    TabOrder = 9
+  end
+  object cbLanguage: TComboBox
+    Left = 91
+    Height = 33
+    Top = 504
+    Width = 102
+    ItemHeight = 25
+    ItemIndex = 10
+    Items.Strings = (
+      'cs-CZ'
+      'de-DE'
+      'en-US'
+      'es-ES'
+      'fr-FR'
+      'it-IT'
+      'ja-JP'
+      'ko-KR'
+      'pl-PL'
+      'pt-BR'
+      'ru-RU'
+      'tr-TR'
+      'zh-CN'
+      'zh-TW'
+    )
+    ParentFont = False
+    TabOrder = 10
+    Text = 'ru-RU'
+  end
+  object CheckBox22: TCheckBox
+    Left = 13
+    Height = 29
+    Top = 655
+    Width = 176
+    Caption = 'Сжать папку в Zip'
+    ParentFont = False
+    TabOrder = 11
+  end
+  object Button2: TButton
+    Left = 380
+    Height = 37
+    Top = 653
+    Width = 37
+    Caption = '?'
+    OnClick = Button2Click
+    TabOrder = 12
+  end
+  object ImageList1: TImageList
+    Left = 360
+    Top = 67
+    Bitmap = {
+      4C69010000001000000010000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000065B7B2B0ABCF8E30ABDF9E50ABEF9E50ABD
+      F9E50ABAF8DF0B88B84A00000000000000000000000000000000000000000000
+      00000000000000000000000000000650763F0CB0F5FF0CB2F6FF0CB3F6FF0CB2
+      F6FF0CB1F6FF0CADF5F00F86B95F07597D5707567C5707547B5707517A57064E
+      7857064C775706487555041E34080A53783F1CBBFAFF1CBDFBFF1DBEFBFF1EBE
+      FBFF1EBDFBFF28C7FDFF36D5FFFF35D4FFFF31D0FFFF2FCCFFFF2CC8FFFF29C4
+      FEFF27BFFDFF24BAFBFF0E4C744315627E472ECEFFFF30D0FFFF32D2FFFF32D2
+      FFFF32D1FFFF30CFFFFF2DCDFFFF2BCAFFFF29C7FFFF26C3FFFF24BFFEFF22BB
+      FCFF20B7FAFF1FB3F8FF0E4E764615607E472FCCFFFF2FCDFFFF2FCDFFFF2DCC
+      FFFF2CCBFFFF2AC9FFFF28C7FFFF26C5FFFF24C2FEFF22BEFDFF21BAFBFF1FB7
+      F9FF1DB3F8FF1CAEF6FF0C4C7546145E7E472BC7FFFF2AC7FFFF29C7FFFF28C6
+      FFFF27C5FFFF25C3FFFF24C2FEFF22BFFDFF20BCFCFF1FB9FBFF1DB6F9FF1CB2
+      F7FF1AAEF5FF19AAF3FF0B4B7446125B7D4726C1FEFF26C1FEFF25C1FEFF24C0
+      FEFF22BFFEFF21BEFDFF20BCFCFF1EBAFBFF1DB8FAFF1BB5F8FF1AB1F7FF19AE
+      F5FF17AAF3FF16A6F1FF0A49734610577B4722BBFBFF21BBFCFF21BBFCFF20BB
+      FBFF1FBAFBFF1DB9FAFF1CB7FAFF1BB5F8FF1AB3F7FF18B0F6FF17ADF4FF16A9
+      F3FF14A6F1FF13A2EFFF094772460F557A471EB4F8FF1EB5F9FF1DB5F9FF1CB5
+      F9FF1BB4F8FF1AB3F8FF19B2F7FF18B0F6FF16AEF5FF15ACF3FF14A8F2FF13A5
+      F0FF11A2EEFF109EECFF084671460D5278471BAEF5FF1AAFF6FF19B0F6FF19B0
+      F6FF18AFF5FF17AEF5FF16ADF4FF15ACF3FF13AAF2FF12A7F1FF11A4EFFF10A1
+      EEFF0E9DECFF0D9AEAFF06446F460C4F764718A8F2FF17A9F2FF16AAF3FF15AA
+      F3FF14AAF2FF14A9F2FF13A8F2FF11A7F1FF10A5F0FF0FA3EEFF0EA0EDFF0D9C
+      EBFF0B99E9FF0A95E7FF05426E46052037161670CC831573CF841575D0841577
+      D3841479D484147AD584137BD584137BD584127AD5841279D3841077D1840F74
+      CE840E71CB840F6DC783021D3416000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000000000000000000000000000000000000000
+      0000000000000000000000000000
+    }
+  end
+  object sd: TSelectDirectoryDialog
+    Left = 106
+    Top = 634
+  end
+  object od: TOpenDialog
+    Filter = 'vs_Community.exe|vs_Community.exe|vs_Professional.exe|vs_Professional.exe|vs_Enterprise.exe|vs_Enterprise.exe'
+    Left = 202
+    Top = 634
+  end
+  object sd1: TSaveDialog
+    Filter = 'Архив zip|*.zip'
+    Left = 288
+    Top = 634
+  end
+end

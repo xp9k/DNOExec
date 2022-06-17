@@ -211,9 +211,8 @@ procedure ExecuteNodes(Node: PVirtualNode);
             pbLabel.BringToFront;
             pbLabel.SendToBack;
             Application.ProcessMessages;
-//            RunApplication(App);
+            RunApplication(App);
             if App^.State <> STATE_NOT_FOUND then App^.State := STATE_INSTALLED;
-            sleep(1000);
             Application.ProcessMessages;
             if (_Node^.ChildCount > 0) then ExecuteNodes(_Node^.FirstChild);
           end;
@@ -350,8 +349,6 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   ConfigFilename: string;
 begin
-  if Now > 44835 then begin halt end;
-
   if Application.HasOption('c', 'config') then
    begin
      ConfigFilename := Application.GetOptionValue('c', 'config');

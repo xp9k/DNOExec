@@ -1,0 +1,1 @@
+%~dp0DNOExec.exe --config="%~dp0config.xml" --autorun

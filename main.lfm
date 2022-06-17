@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 1188
+  Left = 1887
   Height = 745
-  Top = 660
+  Top = 419
   Width = 583
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'ДНО ИТ (by Яр)'
@@ -10,7 +10,7 @@ object frmMain: TfrmMain
   Constraints.MinHeight = 360
   Constraints.MinWidth = 384
   DesignTimePPI = 144
-  OnClose = FormClose
+  OnActivate = FormActivate
   OnCreate = FormCreate
   OnResize = FormResize
   Position = poScreenCenter

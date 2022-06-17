@@ -23,7 +23,7 @@ type
     CheckBox14: TCheckBox;
     CheckBox15: TCheckBox;
     CheckBox16: TCheckBox;
-    CheckBox17: TCheckBox;
+    CheckBox0: TCheckBox;
     CheckBox18: TCheckBox;
     CheckBox19: TCheckBox;
     CheckBox2: TCheckBox;
@@ -52,7 +52,7 @@ type
     SpeedButton2: TSpeedButton;
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
-    procedure CheckBox17Change(Sender: TObject);
+    procedure CheckBox0Change(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
   private
@@ -128,7 +128,7 @@ begin
      end;
 end;
 
-procedure TfrmVS.CheckBox17Change(Sender: TObject);
+procedure TfrmVS.CheckBox0Change(Sender: TObject);
 var
   i: integer;
   Component: TComponent;
@@ -138,7 +138,7 @@ begin
       Component := frmVS.FindComponent('CheckBox'  + IntToStr(i));
       if Component <> nil then
          begin
-           TCheckBox(Component).Enabled := not CheckBox17.Checked;
+           TCheckBox(Component).Enabled := not CheckBox0.Checked;
          end;
     end;
 end;
@@ -151,13 +151,14 @@ var
   zipFile: string;
 begin
   cmdLine := '';
+
   for i := 1 to 16 do
     begin
-      Component := frmVS.FindComponent('CheckBox'  + IntToStr(i));
+      Component := sbComponents.FindChildControl('CheckBox'  + IntToStr(i));
       if Component <> nil then
          begin
            if TCheckBox(Component).Checked then
-              cmdLine := cmdLine + ' --add ' + TCheckBox(Component).Caption;
+              cmdLine := cmdLine + ' --add ' + TCheckBox(Component).Hint;
          end;
     end;
   if RadioButton1.Checked then cmdLine := cmdLine + ' ' + RadioButton1.Caption;
@@ -187,18 +188,22 @@ var
   i: integer;
   cmdLine: string;
   Component: TComponent;
-  zipFile: string;
+  frm: TForm;
+  memo: TMemo;
 begin
   cmdLine := '';
-  for i := 1 to 16 do
-    begin
-      Component := frmVS.FindComponent('CheckBox'  + IntToStr(i));
-      if Component <> nil then
-         begin
-           if TCheckBox(Component).Checked then
-              cmdLine := cmdLine + ' --add ' + TCheckBox(Component).Caption;
-         end;
-    end;
+  if CheckBox0.Checked then
+     cmdLine := ''
+  else
+    for i := 1 to 16 do
+      begin
+        Component := sbComponents.FindChildControl('CheckBox'  + IntToStr(i));
+        if Component <> nil then
+           begin
+             if TCheckBox(Component).Checked then
+                cmdLine := cmdLine + ' --add ' + TCheckBox(Component).Hint;
+           end;
+      end;
   if RadioButton1.Checked then cmdLine := cmdLine + ' ' + RadioButton1.Caption;
   if RadioButton2.Checked then cmdLine := cmdLine + ' ' + RadioButton2.Caption;
   if CheckBox19.Checked then cmdLine := cmdLine + ' ' + CheckBox19.Caption;
@@ -212,7 +217,24 @@ begin
 
   cmdLine := cmdLine + ' --layout ' + edSaveDir.Text;
 
-  ShowMessage(cmdLine);
+  try
+    frm := TForm.Create(self);
+    frm.Width:=500;
+    frm.Height:=300;
+    frm.Position := poScreenCenter;
+
+    memo := TMemo.Create(frm);
+    memo.Parent := frm;
+    memo.Align:=alClient;
+    memo.Text:=cmdLine;
+
+    frm.ShowModal;
+  finally
+     memo.Free;
+     frm.Free;
+  end;
+
+//  ShowMessage(cmdLine);
 end;
 
 end.

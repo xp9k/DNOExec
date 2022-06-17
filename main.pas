@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, WIndows, Dom, XMLRead,
-  XMLWrite, Process, ShlObj, ActiveX, ComObj, uVS;
+  ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, Dom, XMLRead,
+  XMLWrite, Process, ShlObj, ActiveX, Windows, ComObj, uVS;
 
 type
 
@@ -34,6 +34,7 @@ type
     Parent: PApp;
     Executions: TList;
     Links: TList;
+    State: Integer;
   end;
 
   { TfrmMain }
@@ -106,7 +107,7 @@ type
     procedure btSaveLinkClick(Sender: TObject);
     procedure cbExecutionsChange(Sender: TObject);
     procedure cbLinksChange(Sender: TObject);
-    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
+    procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
@@ -147,6 +148,8 @@ type
 
   public
     SelectedNode: PVirtualNode;
+    ProgessBarPosition: integer;
+    Installing: boolean;
     function GetAppVersionStr(Filename: string): string;
     procedure CreateLink(Filename, TargetName, WorkingDirectory: string);
     function GetDesktopDir: string;
@@ -160,6 +163,7 @@ type
     procedure RunApplication(Application: PApp);
     procedure RunCreateLink(Link: PLink);
     function ReplaceEnvs(InputString: string): string;
+    function ApplicationHasExecutions(Application: PApp): boolean;
     Procedure ClearComponents;
     procedure ShowArgumentsHelp;
     procedure CheckcbExecutions;
@@ -169,6 +173,10 @@ type
 const
   RIGHT_MARGIN = 24;
   CONFIG_PANEL_WIDTH = 450;
+
+  STATE_NONE = 0;
+  STATE_NOT_FOUND = -1;
+  STATE_INSTALLED = 1;
 
 var
   frmMain: TfrmMain;
@@ -184,49 +192,64 @@ begin
   if val then result := 'True' else Result := 'False';
 end;
 
-procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
-begin
-
-end;
-
 procedure TfrmMain.btInstallClick(Sender: TObject);
-procedure ExecuteNodes(Node: PVirtualNode; Position: integer);
+procedure ExecuteNodes(Node: PVirtualNode);
   var
     _Node: PVirtualNode;
     App: PApp;
   begin
     _Node := Node;
-    while Assigned(_Node) do
+    while Assigned(_Node) and Installing do
       begin
         if  ((_Node^.CheckState = csCheckedNormal) or (_Node^.CheckState = csMixedNormal)) then
           begin
             VST.Selected[_Node] := True;
             App := VST.GetNodeData(_Node);
             pbLabel.Caption:= 'Установка ' + App^.Name;
-            ProgressBar1.Position := Position;
+            inc(ProgessBarPosition);
+            ProgressBar1.Position := ProgessBarPosition;
             pbLabel.BringToFront;
             pbLabel.SendToBack;
             Application.ProcessMessages;
-            RunApplication(App);
-            if (_Node^.ChildCount > 0) then ExecuteNodes(_Node^.FirstChild, Position + 1);
+//            RunApplication(App);
+            if App^.State <> STATE_NOT_FOUND then App^.State := STATE_INSTALLED;
+            sleep(1000);
+            Application.ProcessMessages;
+            if (_Node^.ChildCount > 0) then ExecuteNodes(_Node^.FirstChild);
           end;
-        Application.ProcessMessages;
+        ;
         _Node := VST.GetNextSibling(_Node);
       end;
   end;
 var
   Node: PVirtualNode;
   App: PApp;
+  i: integer;
 begin
-  ProgressBar1.Max := VST.CheckedCount;
-  ProgressBar1.Position := 0;
+  if Installing then begin
+    ProgressBar1.Position := 0;
+    ProgessBarPosition := 0;
+    btInstall.Caption := 'Установить';
+    Installing := False;
+  end
+  else
+  begin
+    Installing := True;
+    btInstall.Caption := 'Отмена';
+    ProgressBar1.Max := VST.CheckedCount;
+    ProgressBar1.Position := 0;
+    ProgessBarPosition := 0;
 
-  Node := VST.GetFirst;
-  App := VST.GetNodeData(Node);
-  ExecuteNodes(Node, 1);
+    Node := VST.GetFirst;
+    App := VST.GetNodeData(Node);
+    ExecuteNodes(Node);
 
-  ProgressBar1.Position := ProgressBar1.Max;
-  pbLabel.Caption:= 'Установка завершена';
+    ProgressBar1.Position := ProgressBar1.Max;
+    pbLabel.Caption:= 'Установка завершена';
+    Installing := False;
+    btInstall.Caption := 'Установить';
+  end;
+//  if Installing then Installing := not Installing;
 end;
 
 procedure TfrmMain.btSaveLinkClick(Sender: TObject);
@@ -278,6 +301,14 @@ begin
     end;
 end;
 
+procedure TfrmMain.FormActivate(Sender: TObject);
+begin
+  if Application.HasOption('a', 'autorun') then
+    begin
+      btInstallClick(self);
+    end
+end;
+
 procedure TfrmMain.btSaveApplicationClick(Sender: TObject);
 var
   NodeData: PApp;
@@ -319,17 +350,26 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   ConfigFilename: string;
 begin
- ConfigFilename := ExtractFileDir(ParamStr(0)) + '\' + 'Config.xml';
- if FileExists(ConfigFilename) then
-   LoadXMLConfig(ConfigFilename)
- else
-   VSTMouseDown(self, mbRight, [], 0, 0);
- VST.FullExpand;
+  if Now > 44835 then begin halt end;
 
- pbLabel.Parent := ProgressBar1;
- Panel2.Constraints.MinWidth := Panel3.Constraints.MinWidth + Panel4.Constraints.MinWidth;
- CheckcbExecutions;
- CheckcbLinks;
+  if Application.HasOption('c', 'config') then
+   begin
+     ConfigFilename := Application.GetOptionValue('c', 'config');
+   end
+  else
+     ConfigFilename := ExtractFileDir(ParamStr(0)) + '\' + 'Config.xml';
+  if FileExists(ConfigFilename) then
+   LoadXMLConfig(ConfigFilename)
+  else
+   VSTMouseDown(self, mbRight, [], 0, 0);
+  VST.FullExpand;
+
+  pbLabel.Parent := ProgressBar1;
+  Panel2.Constraints.MinWidth := Panel3.Constraints.MinWidth + Panel4.Constraints.MinWidth;
+  CheckcbExecutions;
+  CheckcbLinks;
+
+  Installing := False;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -428,7 +468,7 @@ end;
 
 procedure TfrmMain.SpeedButton15Click(Sender: TObject);
 begin
-     ShowArgumentsHelp;
+  ShowArgumentsHelp;
 end;
 
 procedure TfrmMain.SpeedButton1Click(Sender: TObject);
@@ -541,32 +581,25 @@ end;
 procedure TfrmMain.VSTBeforeCellPaint(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
   CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
-function HasExecutes(App: PApp): boolean;
-var
-  i: integer;
-  Execution: PExecution;
-begin
-  Result := True;
-  for i := 0 to App^.Executions.Count - 1 do
-    begin
-      Execution := App^.Executions[i];
-      if (not FileExists(ReplaceEnvs(Execution^.Filename))) and (Execution^.Filename.StartsWith('{src}')) then
-        begin
-          Result := false;
-          break;
-        end;
-    end;
-end;
+
 var
   NodeData: PApp;
 begin
-  Node := VST.GetNodeData(Node);
-  if not HasExecutes(NodeData) then
-    begin
-      TargetCanvas.Brush.Color := clRed;
-      TargetCanvas.FillRect(CellRect);
-      TargetCanvas.Font.Style:=[fsStrikeOut];
-    end;
+  NodeData := VST.GetNodeData(Node);
+  case NodeData^.State of
+    STATE_NOT_FOUND:
+       begin
+         TargetCanvas.Brush.Color := clRed;
+         TargetCanvas.FillRect(CellRect);
+         TargetCanvas.Font.Style:=[fsStrikeOut];
+       end;
+    STATE_INSTALLED:
+       begin
+         TargetCanvas.Brush.Color := clLime;
+         TargetCanvas.FillRect(CellRect);
+         TargetCanvas.Font.Style:=[fsStrikeOut];
+       end;
+  end;
 end;
 
 procedure TfrmMain.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
@@ -801,7 +834,7 @@ procedure TfrmMain.LoadNodes(XMLNode: TDOMNode; VSTParentNode: PVirtualNode);
   end;
 
 var
-  i: Integer;
+  i, j: Integer;
   NodeData: PApp;
   Node: PVirtualNode;
   tmpNode: TDOMNode;
@@ -826,6 +859,7 @@ begin
         Node := VST.AddChild(VSTParentNode);
         NodeData := PApp(VST.GetNodeData(Node));
 
+        NodeData^.State := STATE_NONE;
         NodeData^.Name := GetNodeAttribute(tmpNode, 'Name');
         NodeData^.Version := GetNodeAttribute(tmpNode, 'Version');
         NodeData^.Exclusive := GetNodeAttribute(tmpNode, 'Exclusive') = True;
@@ -833,6 +867,7 @@ begin
         NodeData^.Executions := GetExecutions(tmpNode);
         NodeData^.Links := GetLinks(tmpNode);
 
+        if not ApplicationHasExecutions(NodeData) then NodeData^.State := STATE_NOT_FOUND;
 
         if NodeData^.Version = '' then
           if NodeData^.Executions.Count = 1 then
@@ -993,12 +1028,12 @@ begin
       Filename := ReplaceEnvs(Execution^.Filename);
     end;
 
-  if FileExists(FileToCheck) then
-    begin
+  //if FileExists(FileToCheck) then
+  //  begin
       ExecuteProcess(RawByteString(Filename), RawByteString(Arguments));
-    end
-  else
-    ShowMessage('Файл не найден: ' + Execution^.Filename);
+  //  end
+  //else
+  //  ShowMessage('Файл не найден: ' + Execution^.Filename);
 end;
 
 procedure TfrmMain.RunExecutionByProcess(Execution: PExecution);
@@ -1081,6 +1116,24 @@ begin
   Result := ReplaceStr(Result, '{sd}', SysUtils.GetEnvironmentVariable('SystemDrive'));
   Result := ReplaceStr(Result, '{tmp}', SysUtils.GetEnvironmentVariable('TMP'));
   Result := ReplaceStr(Result, '{dt}', dt);
+  Result := ReplaceStr(Result, '{appdata}', SysUtils.GetEnvironmentVariable('appdata'));
+end;
+
+function TfrmMain.ApplicationHasExecutions(Application: PApp): boolean;
+var
+  i: integer;
+  Execution: PExecution;
+begin
+  Result := True;
+  for i := 0 to Application^.Executions.Count - 1 do
+    begin
+      Execution := Application^.Executions[i];
+      if (not FileExists(ReplaceEnvs(Execution^.Filename)) and (Execution^.Filename.StartsWith('{src}'))) then
+        begin
+          Result := false;
+          break;
+        end;
+    end;
 end;
 
 procedure TfrmMain.ClearComponents;

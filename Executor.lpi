@@ -12,7 +12,6 @@
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
-        <DpiAware Value="True"/>
         <TextName Value="sch1793.DNO.Executor"/>
         <TextDesc Value="Оболочка для запуска установщиков ПО"/>
       </XPManifest>

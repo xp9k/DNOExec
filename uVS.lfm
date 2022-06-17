@@ -1,7 +1,7 @@
 object frmVS: TfrmVS
-  Left = 612
+  Left = 916
   Height = 707
-  Top = 584
+  Top = 898
   Width = 544
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
@@ -60,7 +60,7 @@ object frmVS: TfrmVS
   object Button1: TButton
     Left = 422
     Height = 37
-    Top = 653
+    Top = 652
     Width = 113
     Caption = 'Скачать'
     OnClick = Button1Click
@@ -72,19 +72,19 @@ object frmVS: TfrmVS
     Height = 317
     Top = 106
     Width = 528
-    HorzScrollBar.Page = 477
-    VertScrollBar.Page = 313
-    ClientHeight = 313
+    HorzScrollBar.Page = 498
+    VertScrollBar.Page = 287
+    ClientHeight = 287
     ClientWidth = 498
     ParentFont = False
     TabOrder = 3
     object CheckBox1: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка для Azure'
+      Hint = 'Microsoft.VisualStudio.Workload.Azure'
       Top = 43
-      Width = 339
-      Caption = 'Microsoft.VisualStudio.Workload.Azure'
+      Width = 206
+      Caption = 'Разработка для Azure'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -93,10 +93,10 @@ object frmVS: TfrmVS
     object CheckBox2: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Хранение и обработка данных'
+      Hint = 'Microsoft.VisualStudio.Workload.Data'
       Top = 82
-      Width = 331
-      Caption = 'Microsoft.VisualStudio.Workload.Data'
+      Width = 281
+      Caption = 'Хранение и обработка данных'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -105,10 +105,10 @@ object frmVS: TfrmVS
     object CheckBox3: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Приложения для обработки и анализа данных и аналитические приложения'
+      Hint = 'Microsoft.VisualStudio.Workload.DataScience'
       Top = 120
-      Width = 389
-      Caption = 'Microsoft.VisualStudio.Workload.DataScience'
+      Width = 656
+      Caption = 'Приложения для обработки и анализа данных и аналитические приложения'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -117,10 +117,10 @@ object frmVS: TfrmVS
     object CheckBox4: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка классических приложений .NET'
+      Hint = 'Microsoft.VisualStudio.Workload.ManagedDesktop'
       Top = 158
-      Width = 436
-      Caption = 'Microsoft.VisualStudio.Workload.ManagedDesktop'
+      Width = 383
+      Caption = 'Разработка классических приложений .NET'
       Checked = True
       ParentFont = False
       ParentShowHint = False
@@ -131,10 +131,10 @@ object frmVS: TfrmVS
     object CheckBox5: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка игр с помощью Unity'
+      Hint = 'Microsoft.VisualStudio.Workload.ManagedGame'
       Top = 197
-      Width = 415
-      Caption = 'Microsoft.VisualStudio.Workload.ManagedGame'
+      Width = 304
+      Caption = 'Разработка игр с помощью Unity'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -143,10 +143,10 @@ object frmVS: TfrmVS
     object CheckBox6: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка приложений для Linux на C++'
+      Hint = 'Microsoft.VisualStudio.Workload.NativeCrossPlat'
       Top = 235
-      Width = 417
-      Caption = 'Microsoft.VisualStudio.Workload.NativeCrossPlat'
+      Width = 373
+      Caption = 'Разработка приложений для Linux на C++'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -155,10 +155,10 @@ object frmVS: TfrmVS
     object CheckBox7: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка классических приложений на C++'
+      Hint = 'Microsoft.VisualStudio.Workload.NativeDesktop'
       Top = 274
-      Width = 411
-      Caption = 'Microsoft.VisualStudio.Workload.NativeDesktop'
+      Width = 407
+      Caption = 'Разработка классических приложений на C++'
       Checked = True
       ParentFont = False
       ParentShowHint = False
@@ -169,10 +169,10 @@ object frmVS: TfrmVS
     object CheckBox8: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка игр на C++'
+      Hint = 'Microsoft.VisualStudio.Workload.NativeGame'
       Top = 312
-      Width = 390
-      Caption = 'Microsoft.VisualStudio.Workload.NativeGame'
+      Width = 220
+      Caption = 'Разработка игр на C++'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -181,10 +181,10 @@ object frmVS: TfrmVS
     object CheckBox9: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка мобильных приложений на C++'
+      Hint = 'Microsoft.VisualStudio.Workload.NativeMobile'
       Top = 350
-      Width = 399
-      Caption = 'Microsoft.VisualStudio.Workload.NativeMobile'
+      Width = 393
+      Caption = 'Разработка мобильных приложений на C++'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -193,10 +193,10 @@ object frmVS: TfrmVS
     object CheckBox10: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка мобильных приложений на платформе .NET'
+      Hint = 'Microsoft.VisualStudio.Workload.NetCrossPlat'
       Top = 389
-      Width = 395
-      Caption = 'Microsoft.VisualStudio.Workload.NetCrossPlat'
+      Width = 489
+      Caption = 'Разработка мобильных приложений на платформе .NET'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -205,10 +205,10 @@ object frmVS: TfrmVS
     object CheckBox11: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'ASP.NET и веб-разработка'
+      Hint = 'Microsoft.VisualStudio.Workload.NetWeb'
       Top = 427
-      Width = 359
-      Caption = 'Microsoft.VisualStudio.Workload.NetWeb'
+      Width = 247
+      Caption = 'ASP.NET и веб-разработка'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -217,10 +217,10 @@ object frmVS: TfrmVS
     object CheckBox12: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка Node.js'
+      Hint = 'Microsoft.VisualStudio.Workload.Node'
       Top = 466
-      Width = 338
-      Caption = 'Microsoft.VisualStudio.Workload.Node'
+      Width = 188
+      Caption = 'Разработка Node.js'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -229,10 +229,10 @@ object frmVS: TfrmVS
     object CheckBox13: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка для Office и SharePoint'
+      Hint = 'Microsoft.VisualStudio.Workload.Office'
       Top = 504
-      Width = 341
-      Caption = 'Microsoft.VisualStudio.Workload.Office'
+      Width = 313
+      Caption = 'Разработка для Office и SharePoint'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -241,10 +241,10 @@ object frmVS: TfrmVS
     object CheckBox14: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка на Python'
+      Hint = 'Microsoft.VisualStudio.Workload.Python'
       Top = 542
-      Width = 350
-      Caption = 'Microsoft.VisualStudio.Workload.Python'
+      Width = 208
+      Caption = 'Разработка на Python'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -253,10 +253,10 @@ object frmVS: TfrmVS
     object CheckBox15: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка с помощью универсальной платформы Windows'
+      Hint = 'Microsoft.VisualStudio.Workload.Universal'
       Top = 581
-      Width = 365
-      Caption = 'Microsoft.VisualStudio.Workload.Universal'
+      Width = 534
+      Caption = 'Разработка с помощью универсальной платформы Windows'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -265,22 +265,23 @@ object frmVS: TfrmVS
     object CheckBox16: TCheckBox
       Left = 10
       Height = 29
-      Hint = 'Разработка расширений Visual Studio'
+      Hint = 'Microsoft.VisualStudio.Workload.VisualStudioExtension'
       Top = 619
-      Width = 467
-      Caption = 'Microsoft.VisualStudio.Workload.VisualStudioExtension'
+      Width = 338
+      Caption = 'Разработка расширений Visual Studio'
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
       TabOrder = 15
     end
-    object CheckBox17: TCheckBox
+    object CheckBox0: TCheckBox
       Left = 10
       Height = 29
+      Hint = 'Все компоненты'
       Top = 5
       Width = 57
       Caption = 'Все'
-      OnChange = CheckBox17Change
+      OnChange = CheckBox0Change
       ParentFont = False
       ParentShowHint = False
       ShowHint = True
@@ -393,7 +394,7 @@ object frmVS: TfrmVS
   object Button2: TButton
     Left = 380
     Height = 37
-    Top = 653
+    Top = 652
     Width = 37
     Caption = '?'
     OnClick = Button2Click

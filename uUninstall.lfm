@@ -1,0 +1,137 @@
+object frmUninstall: TfrmUninstall
+  Left = 1630
+  Height = 776
+  Top = 534
+  Width = 1280
+  Caption = 'Деинсталляция'
+  ClientHeight = 776
+  ClientWidth = 1280
+  DesignTimePPI = 144
+  OnShow = FormShow
+  Position = poScreenCenter
+  LCLVersion = '2.0.10.0'
+  object VST: TVirtualStringTree
+    Left = 0
+    Height = 640
+    Top = 0
+    Width = 1280
+    Align = alClient
+    DefaultText = 'Node'
+    Header.AutoSizeIndex = 0
+    Header.Columns = <    
+      item
+        MinWidth = 100
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coEditable]
+        Position = 0
+        Text = 'Имя'
+        Width = 300
+      end    
+      item
+        MaxWidth = 300
+        MinWidth = 100
+        Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coEditable]
+        Position = 1
+        Text = 'Версия'
+        Width = 150
+      end    
+      item
+        MinWidth = 150
+        Options = [coAllowClick, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coSmartResize, coAllowFocus, coUseCaptionAlignment, coEditable]
+        Position = 2
+        Text = 'Команда'
+        Width = 600
+      end>
+    Header.Options = [hoColumnResize, hoDrag, hoShowImages, hoShowSortGlyphs, hoVisible, hoHeaderClickAutoSort]
+    ScrollBarOptions.ScrollBarStyle = sbm3D
+    TabOrder = 0
+    TreeOptions.MiscOptions = [toAcceptOLEDrop, toCheckSupport, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning, toEditOnClick]
+    TreeOptions.PaintOptions = [toPopupMode, toShowButtons, toShowDropmark, toShowHorzGridLines, toShowVertGridLines, toThemeAware, toUseBlendedImages]
+    TreeOptions.SelectionOptions = [toFullRowSelect]
+    OnBeforeCellPaint = VSTBeforeCellPaint
+    OnChecking = VSTChecking
+    OnCompareNodes = VSTCompareNodes
+    OnGetText = VSTGetText
+    OnGetNodeDataSize = VSTGetNodeDataSize
+    OnGetPopupMenu = VSTGetPopupMenu
+    OnInitNode = VSTInitNode
+    OnResize = VSTResize
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 136
+    Top = 640
+    Width = 1280
+    Align = alBottom
+    ClientHeight = 136
+    ClientWidth = 1280
+    TabOrder = 1
+    object Panel2: TPanel
+      Left = 1013
+      Height = 68
+      Top = 1
+      Width = 266
+      Align = alRight
+      BevelOuter = bvNone
+      ClientHeight = 68
+      ClientWidth = 266
+      TabOrder = 0
+      object Button1: TButton
+        Left = 8
+        Height = 38
+        Top = 16
+        Width = 113
+        Caption = 'Удалить'
+        OnClick = Button1Click
+        TabOrder = 0
+      end
+      object Button2: TButton
+        Left = 144
+        Height = 38
+        Top = 16
+        Width = 113
+        Caption = 'Закрыть'
+        OnClick = Button2Click
+        TabOrder = 1
+      end
+    end
+    object StatusBar1: TStatusBar
+      Left = 1
+      Height = 36
+      Top = 69
+      Width = 1278
+      Panels = <>
+    end
+    object ProgressBar1: TProgressBar
+      Left = 1
+      Height = 30
+      Top = 105
+      Width = 1278
+      Align = alBottom
+      Smooth = True
+      Step = 1
+      TabOrder = 2
+      BarShowText = True
+    end
+  end
+  object pm: TPopupMenu
+    OnPopup = pmPopup
+    Left = 395
+    Top = 462
+    object MenuItem1: TMenuItem
+      Caption = 'Запустить команду без обработки'
+      OnClick = MenuItem1Click
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Открыть папку'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = 'Снять все галочки'
+      OnClick = MenuItem3Click
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Обновить'
+      OnClick = MenuItem4Click
+    end
+  end
+end

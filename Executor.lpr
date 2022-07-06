@@ -7,7 +7,7 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, main, uVS;
+  Forms, main, uVS, uUninstall;
 
 {$R *.res}
 
@@ -17,6 +17,7 @@ begin
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmVS, frmVS);
+  Application.CreateForm(TfrmUninstall, frmUninstall);
   Application.Run;
 end.
 

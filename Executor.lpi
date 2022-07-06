@@ -12,6 +12,7 @@
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
+        <ExecutionLevel Value="requireAdministrator"/>
         <TextName Value="sch1793.DNO.Executor"/>
         <TextDesc Value="Оболочка для запуска установщиков ПО"/>
       </XPManifest>
@@ -20,11 +21,11 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
-      <MinorVersionNr Value="9"/>
-      <RevisionNr Value="135"/>
+      <MinorVersionNr Value="11"/>
+      <RevisionNr Value="201"/>
       <BuildNr Value="254"/>
       <Language Value="0419"/>
-      <StringTable Comments="by Яр" CompanyName="Школа №1793 Жулебино" FileDescription="by Яр" LegalCopyright="Школа №1793 Жулебино" ProductName="Оболочка для запуска установщиков ПО"/>
+      <StringTable Comments="by Яр" CompanyName="Школа №1793 Жулебино" FileDescription="DNO Executor" LegalCopyright="Школа №1793 Жулебино" LegalTrademarks="by Яр" ProductName="Оболочка для запуска установщиков ПО"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
@@ -45,7 +46,7 @@
         <PackageName Value="LCL"/>
       </Item2>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="7">
       <Unit0>
         <Filename Value="Executor.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -68,6 +69,22 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="uUninstall.lfm"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="uUninstall.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUninstall"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="dnotypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="DnoTypes"/>
+      </Unit6>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

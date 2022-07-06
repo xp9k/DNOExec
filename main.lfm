@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 1887
+  Left = 1837
   Height = 745
-  Top = 419
+  Top = 530
   Width = 583
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'ДНО ИТ (by Яр)'
@@ -28,7 +28,7 @@ object frmMain: TfrmMain
       item
         CaptionAlignment = taCenter
         MaxWidth = 1000
-        MinWidth = 200
+        MinWidth = 150
         Options = [coAllowClick, coDraggable, coEnabled, coParentBidiMode, coParentColor, coResizable, coShowDropMark, coVisible, coAllowFocus, coUseCaptionAlignment, coEditable]
         Position = 0
         Text = 'Программа'
@@ -48,11 +48,14 @@ object frmMain: TfrmMain
     TreeOptions.MiscOptions = [toAcceptOLEDrop, toCheckSupport, toEditable, toFullRepaintOnResize, toInitOnSave, toToggleOnDblClick, toWheelPanning]
     TreeOptions.PaintOptions = [toHideSelection, toShowButtons, toShowDropmark, toShowRoot, toThemeAware, toUseBlendedImages, toAlwaysHideSelection, toUseBlendedSelection]
     OnBeforeCellPaint = VSTBeforeCellPaint
+    OnDrawText = VSTDrawText
     OnFocusChanged = VSTFocusChanged
     OnGetText = VSTGetText
+    OnPaintText = VSTPaintText
     OnGetNodeDataSize = VSTGetNodeDataSize
     OnInitNode = VSTInitNode
     OnMouseDown = VSTMouseDown
+    OnMouseMove = VSTMouseMove
     OnResize = VSTResize
   end
   object Panel1: TPanel
@@ -203,12 +206,12 @@ object frmMain: TfrmMain
       TabOrder = 1
       object PanelApplication: TPanel
         Left = 0
-        Height = 181
+        Height = 216
         Top = 0
         Width = 459
         Align = alTop
         BevelOuter = bvNone
-        ClientHeight = 181
+        ClientHeight = 216
         ClientWidth = 459
         ParentFont = False
         TabOrder = 0
@@ -236,9 +239,9 @@ object frmMain: TfrmMain
           TabOrder = 1
         end
         object btSaveApplication: TBitBtn
-          Left = 289
+          Left = 288
           Height = 46
-          Top = 130
+          Top = 160
           Width = 156
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 19
@@ -383,16 +386,16 @@ object frmMain: TfrmMain
         object cbChecked: TCheckBox
           Left = 19
           Height = 29
-          Top = 112
+          Top = 120
           Width = 93
           Caption = 'Выбран'
           ParentFont = False
           TabOrder = 3
         end
         object edVersion: TLabeledEdit
-          Left = 325
+          Left = 323
           Height = 33
-          Top = 82
+          Top = 80
           Width = 120
           Anchors = [akTop, akRight]
           BorderSpacing.Right = 19
@@ -405,11 +408,25 @@ object frmMain: TfrmMain
           ParentFont = False
           TabOrder = 4
         end
+        object edURL: TLabeledEdit
+          Left = 224
+          Height = 33
+          Top = 119
+          Width = 219
+          Anchors = [akTop, akRight]
+          BorderSpacing.Right = 19
+          EditLabel.Height = 25
+          EditLabel.Width = 94
+          EditLabel.Caption = 'Update URL'
+          EditLabel.ParentColor = False
+          LabelPosition = lpLeft
+          TabOrder = 5
+        end
       end
       object PanelExecutions: TPanel
         Left = 0
         Height = 230
-        Top = 224
+        Top = 259
         Width = 459
         Align = alTop
         BevelOuter = bvNone
@@ -668,7 +685,7 @@ object frmMain: TfrmMain
       object PanelLinks: TPanel
         Left = 0
         Height = 293
-        Top = 497
+        Top = 532
         Width = 459
         Align = alTop
         BevelOuter = bvNone
@@ -934,7 +951,7 @@ object frmMain: TfrmMain
       object Panel8: TPanel
         Left = 0
         Height = 43
-        Top = 181
+        Top = 216
         Width = 459
         Align = alTop
         BevelOuter = bvNone
@@ -973,7 +990,7 @@ object frmMain: TfrmMain
       object Panel9: TPanel
         Left = 0
         Height = 43
-        Top = 454
+        Top = 489
         Width = 459
         Align = alTop
         BevelOuter = bvNone
@@ -1406,6 +1423,10 @@ object frmMain: TfrmMain
     end
     object MenuItem4: TMenuItem
       Caption = 'Инструменты'
+      object MenuItem7: TMenuItem
+        Caption = 'Деинсталлятор'
+        OnClick = MenuItem7Click
+      end
       object MenuItem5: TMenuItem
         Caption = 'Скачать Visual Studio'
         OnClick = MenuItem5Click

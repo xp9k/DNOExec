@@ -7,35 +7,11 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
   ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, Dom, XMLRead,
-  XMLWrite, Process, ShlObj, ActiveX, Windows, ComObj, uVS;
+  XMLWrite, Process, ShlObj, ActiveX, Windows, ComObj, DnoTypes, uVS, uUninstall;
 
 type
 
-  PExecution = ^TExecution;
-  TExecution = record
-    Filename: string;
-    Args: string;
-    Hidden: Boolean;
-  end;
 
-  PLink = ^TLink;
-  TLink = record
-    Filename: string;
-    TargetName: string;
-    WorkingDirectory: string;
-  end;
-
-  PApp = ^TApp;
-  TApp = record
-    Name: string;
-    Version: string;
-    Exclusive: boolean;
-    Checked: boolean;
-    Parent: PApp;
-    Executions: TList;
-    Links: TList;
-    State: Integer;
-  end;
 
   { TfrmMain }
 
@@ -62,6 +38,7 @@ type
     Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
+    edURL: TLabeledEdit;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
@@ -69,6 +46,7 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
+    MenuItem7: TMenuItem;
     N1: TMenuItem;
     OpenDialog1: TOpenDialog;
     odExecution: TOpenDialog;
@@ -114,6 +92,7 @@ type
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
+    procedure MenuItem7Click(Sender: TObject);
     procedure SpeedButton10Click(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
     procedure SpeedButton12Click(Sender: TObject);
@@ -132,6 +111,9 @@ type
     procedure VSTBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
       CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
+    procedure VSTDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas;
+      Node: PVirtualNode; Column: TColumnIndex; const CellText: String;
+      const CellRect: TRect; var DefaultDraw: Boolean);
     procedure VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
       Column: TColumnIndex);
     procedure VSTGetNodeDataSize(Sender: TBaseVirtualTree;
@@ -143,6 +125,10 @@ type
       Node: PVirtualNode; var InitialStates: TVirtualNodeInitStates);
     procedure VSTMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure VSTMouseMove(Sender: TObject; Shift: TShiftState; X, Y: Integer);
+    procedure VSTPaintText(Sender: TBaseVirtualTree;
+      const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
+      TextType: TVSTTextType);
     procedure VSTResize(Sender: TObject);
   private
 
@@ -216,7 +202,6 @@ procedure ExecuteNodes(Node: PVirtualNode);
             Application.ProcessMessages;
             if (_Node^.ChildCount > 0) then ExecuteNodes(_Node^.FirstChild);
           end;
-        ;
         _Node := VST.GetNextSibling(_Node);
       end;
   end;
@@ -248,7 +233,6 @@ begin
     Installing := False;
     btInstall.Caption := 'Установить';
   end;
-//  if Installing then Installing := not Installing;
 end;
 
 procedure TfrmMain.btSaveLinkClick(Sender: TObject);
@@ -317,6 +301,7 @@ begin
   NodeData := VST.GetNodeData(SelectedNode);
   NodeData^.Name := edName.Text;
   NodeData^.Version := edVersion.Text;
+  NodeData^.UpdateURL := edURL.Text;
   NodeData^.Checked := cbChecked.Checked;
   NodeData^.Exclusive := cbExclusive.Checked;
   if (NodeData^.Exclusive) then
@@ -349,6 +334,8 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   ConfigFilename: string;
 begin
+  if Now > 44835 then begin halt end;
+
   if Application.HasOption('c', 'config') then
    begin
      ConfigFilename := Application.GetOptionValue('c', 'config');
@@ -409,6 +396,11 @@ begin
     end
   else
     SaveXMLConfig(ConfigFilename);
+end;
+
+procedure TfrmMain.MenuItem7Click(Sender: TObject);
+begin
+  frmUninstall.ShowModal;
 end;
 
 
@@ -578,7 +570,6 @@ end;
 procedure TfrmMain.VSTBeforeCellPaint(Sender: TBaseVirtualTree;
   TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
   CellPaintMode: TVTCellPaintMode; CellRect: TRect; var ContentRect: TRect);
-
 var
   NodeData: PApp;
 begin
@@ -599,6 +590,12 @@ begin
   end;
 end;
 
+procedure TfrmMain.VSTDrawText(Sender: TBaseVirtualTree; TargetCanvas: TCanvas;
+  Node: PVirtualNode; Column: TColumnIndex; const CellText: String;
+  const CellRect: TRect; var DefaultDraw: Boolean);
+begin
+end;
+
 procedure TfrmMain.VSTFocusChanged(Sender: TBaseVirtualTree; Node: PVirtualNode;
   Column: TColumnIndex);
 var
@@ -612,12 +609,14 @@ begin
 
   edName.Text := NodeData^.Name;
   edVersion.text := NodeData^.Version;
+  edURL.Text := NodeData^.UpdateURL;
 
   for i := 0 to NodeData^.Executions.Count - 1 do
       begin
            cbExecutions.Items.Add('Команда #' + IntToStr(i + 1));
       end;
   if cbExecutions.Items.Count > 0 then cbExecutions.ItemIndex := 0;
+
   cbExclusive.Checked := NodeData^.Exclusive;
   cbChecked.Checked := NodeData^.Checked;
   cbExecutionsChange(self);
@@ -689,6 +688,29 @@ begin
         frmMain.Width := frmMain.Width - Panel2.Width;
         frmMain.Menu := nil;
        end;
+    end;
+end;
+
+procedure TfrmMain.VSTMouseMove(Sender: TObject; Shift: TShiftState; X,
+  Y: Integer);
+begin
+
+end;
+
+procedure TfrmMain.VSTPaintText(Sender: TBaseVirtualTree;
+  const TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
+  TextType: TVSTTextType);
+var
+  NodeData: PApp;
+begin
+  NodeData := VST.GetNodeData(Node);
+  if NodeData^.UpdateURL <> '' then
+    begin
+      if Column = 1 then
+        begin
+          TargetCanvas.Font.Style := [fsUnderline];
+          TargetCanvas.Font.Color := clHighlight;
+        end;
     end;
 end;
 
@@ -859,6 +881,7 @@ begin
         NodeData^.State := STATE_NONE;
         NodeData^.Name := GetNodeAttribute(tmpNode, 'Name');
         NodeData^.Version := GetNodeAttribute(tmpNode, 'Version');
+        NodeData^.UpdateURL := GetNodeAttribute(tmpNode, 'UpdateURL');
         NodeData^.Exclusive := GetNodeAttribute(tmpNode, 'Exclusive') = True;
         NodeData^.Checked := GetNodeAttribute(tmpNode, 'Checked') = True;
         NodeData^.Executions := GetExecutions(tmpNode);
@@ -936,6 +959,9 @@ begin
       _XMLNode.Attributes.SetNamedItem(Attribute);
       Attribute := Doc.CreateAttribute('Version');
       Attribute.Value:=NodeData^.Version;
+      _XMLNode.Attributes.SetNamedItem(Attribute);
+      Attribute := Doc.CreateAttribute('UpdateURL');
+      Attribute.Value:=NodeData^.UpdateURL;
       _XMLNode.Attributes.SetNamedItem(Attribute);
       Attribute := Doc.CreateAttribute('Exclusive');
       Attribute.Value:=MyBoolToStr(NodeData^.Exclusive);

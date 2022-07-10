@@ -152,9 +152,17 @@ end;
 procedure TfrmUninstall.MenuItem2Click(Sender: TObject);
 var
   NodeData: PUninstall;
+  FilePath: string;
+  p: integer;
 begin
   NodeData := VST.GetNodeData(VST.FocusedNode);
-  ShellExecute(0, 'open', 'explorer.exe', PChar(ExtractFileDir(NodeData^.UninstallString)), '', SW_SHOW);
+  p := pos('/', NodeData^.UninstallString);
+  if p > 0 then
+    FilePath := Copy(NodeData^.UninstallString, 1, p - 1).Replace('"', '').Trim
+  else
+    FilePath :=NodeData^.UninstallString.Replace('"', '').Trim;
+  FilePath := ExtractFileDir(FilePath);
+  ShellExecute(0, 'open', 'explorer.exe', PChar(FilePath), '', SW_SHOW);
 end;
 
 procedure TfrmUninstall.MenuItem3Click(Sender: TObject);

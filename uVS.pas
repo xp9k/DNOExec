@@ -43,6 +43,8 @@ type
     edVSexe: TLabeledEdit;
     edSaveDir: TLabeledEdit;
     od: TOpenDialog;
+    Panel1: TPanel;
+    Panel2: TPanel;
     RadioButton1: TRadioButton;
     RadioButton2: TRadioButton;
     sd1: TSaveDialog;

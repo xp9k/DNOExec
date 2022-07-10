@@ -1,83 +1,29 @@
 object frmVS: TfrmVS
-  Left = 916
-  Height = 707
-  Top = 898
+  Left = 2045
+  Height = 712
+  Top = 550
   Width = 544
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSingle
   Caption = 'Скачивание Vusial Studio'
-  ClientHeight = 707
+  ClientHeight = 712
   ClientWidth = 544
+  Constraints.MinHeight = 707
+  Constraints.MinWidth = 544
   DesignTimePPI = 144
   Position = poScreenCenter
   LCLVersion = '2.0.10.0'
-  object edVSexe: TLabeledEdit
-    Left = 10
-    Height = 33
-    Top = 29
-    Width = 490
-    EditLabel.Height = 25
-    EditLabel.Width = 490
-    EditLabel.Caption = 'Путь к файлу установки (vs_Community.exe)'
-    EditLabel.ParentColor = False
-    EditLabel.ParentFont = False
+  object sbComponents: TScrollBox
+    Left = 0
+    Height = 333
+    Top = 99
+    Width = 544
+    HorzScrollBar.Page = 514
+    VertScrollBar.Page = 303
+    Align = alClient
+    ClientHeight = 303
+    ClientWidth = 514
     ParentFont = False
     TabOrder = 0
-  end
-  object edSaveDir: TLabeledEdit
-    Left = 10
-    Height = 33
-    Top = 610
-    Width = 490
-    EditLabel.Height = 25
-    EditLabel.Width = 490
-    EditLabel.Caption = 'Путь к папке сохранения'
-    EditLabel.ParentColor = False
-    EditLabel.ParentFont = False
-    ParentFont = False
-    TabOrder = 1
-  end
-  object SpeedButton1: TSpeedButton
-    Left = 500
-    Height = 34
-    Top = 29
-    Width = 35
-    Images = ImageList1
-    ImageIndex = 0
-    OnClick = SpeedButton1Click
-    ParentFont = False
-  end
-  object SpeedButton2: TSpeedButton
-    Left = 500
-    Height = 34
-    Top = 610
-    Width = 35
-    Images = ImageList1
-    ImageIndex = 0
-    OnClick = SpeedButton2Click
-    ParentFont = False
-  end
-  object Button1: TButton
-    Left = 422
-    Height = 37
-    Top = 652
-    Width = 113
-    Caption = 'Скачать'
-    OnClick = Button1Click
-    ParentFont = False
-    TabOrder = 2
-  end
-  object sbComponents: TScrollBox
-    Left = 10
-    Height = 317
-    Top = 106
-    Width = 528
-    HorzScrollBar.Page = 498
-    VertScrollBar.Page = 287
-    ClientHeight = 287
-    ClientWidth = 498
-    ParentFont = False
-    TabOrder = 3
     object CheckBox1: TCheckBox
       Left = 10
       Height = 29
@@ -288,117 +234,199 @@ object frmVS: TfrmVS
       TabOrder = 16
     end
   end
-  object Label1: TLabel
-    Left = 10
-    Height = 25
-    Top = 77
-    Width = 104
-    Caption = 'Компоненты'
-    ParentColor = False
-    ParentFont = False
-  end
-  object RadioButton1: TRadioButton
-    Left = 10
-    Height = 29
+  object Panel1: TPanel
+    Left = 0
+    Height = 280
     Top = 432
-    Width = 169
-    Caption = '--includeOptional'
-    ParentFont = False
-    TabOrder = 4
+    Width = 544
+    Align = alBottom
+    ClientHeight = 280
+    ClientWidth = 544
+    TabOrder = 1
+    object RadioButton1: TRadioButton
+      Left = 10
+      Height = 29
+      Top = 8
+      Width = 169
+      Caption = '--includeOptional'
+      ParentFont = False
+      TabOrder = 0
+    end
+    object RadioButton2: TRadioButton
+      Left = 10
+      Height = 29
+      Top = 42
+      Width = 221
+      Caption = '--includeRecommended'
+      Checked = True
+      ParentFont = False
+      TabOrder = 1
+      TabStop = True
+    end
+    object CheckBox18: TCheckBox
+      Left = 10
+      Height = 29
+      Top = 80
+      Width = 78
+      Caption = '--lang'
+      Checked = True
+      ParentFont = False
+      State = cbChecked
+      TabOrder = 2
+    end
+    object CheckBox19: TCheckBox
+      Left = 10
+      Height = 29
+      Top = 118
+      Width = 98
+      Caption = '--noweb'
+      ParentFont = False
+      TabOrder = 3
+    end
+    object CheckBox20: TCheckBox
+      Left = 302
+      Height = 29
+      Top = 80
+      Width = 184
+      Caption = '--noUpdateInstaller'
+      ParentFont = False
+      TabOrder = 4
+    end
+    object CheckBox21: TCheckBox
+      Left = 302
+      Height = 29
+      Top = 118
+      Width = 102
+      Caption = '--passive'
+      ParentFont = False
+      TabOrder = 5
+    end
+    object cbLanguage: TComboBox
+      Left = 91
+      Height = 33
+      Top = 80
+      Width = 102
+      ItemHeight = 25
+      ItemIndex = 10
+      Items.Strings = (
+        'cs-CZ'
+        'de-DE'
+        'en-US'
+        'es-ES'
+        'fr-FR'
+        'it-IT'
+        'ja-JP'
+        'ko-KR'
+        'pl-PL'
+        'pt-BR'
+        'ru-RU'
+        'tr-TR'
+        'zh-CN'
+        'zh-TW'
+      )
+      ParentFont = False
+      TabOrder = 6
+      Text = 'ru-RU'
+    end
+    object CheckBox22: TCheckBox
+      Left = 13
+      Height = 29
+      Top = 231
+      Width = 176
+      Caption = 'Сжать папку в Zip'
+      ParentFont = False
+      TabOrder = 7
+    end
+    object Button2: TButton
+      Left = 380
+      Height = 37
+      Top = 228
+      Width = 37
+      Caption = '?'
+      OnClick = Button2Click
+      TabOrder = 8
+    end
+    object edSaveDir: TLabeledEdit
+      AnchorSideRight.Control = SpeedButton2
+      Left = 10
+      Height = 33
+      Top = 186
+      Width = 490
+      Anchors = [akTop, akLeft, akRight]
+      EditLabel.Height = 25
+      EditLabel.Width = 490
+      EditLabel.Caption = 'Путь к папке сохранения'
+      EditLabel.ParentColor = False
+      EditLabel.ParentFont = False
+      ParentFont = False
+      TabOrder = 9
+    end
+    object SpeedButton2: TSpeedButton
+      Left = 500
+      Height = 34
+      Top = 186
+      Width = 35
+      Anchors = [akTop, akRight]
+      Images = ImageList1
+      ImageIndex = 0
+      OnClick = SpeedButton2Click
+      ParentFont = False
+    end
+    object Button1: TButton
+      Left = 422
+      Height = 37
+      Top = 228
+      Width = 113
+      Caption = 'Скачать'
+      OnClick = Button1Click
+      ParentFont = False
+      TabOrder = 10
+    end
   end
-  object RadioButton2: TRadioButton
-    Left = 10
-    Height = 29
-    Top = 466
-    Width = 221
-    Caption = '--includeRecommended'
-    Checked = True
-    ParentFont = False
-    TabOrder = 5
-    TabStop = True
-  end
-  object CheckBox18: TCheckBox
-    Left = 10
-    Height = 29
-    Top = 504
-    Width = 78
-    Caption = '--lang'
-    Checked = True
-    ParentFont = False
-    State = cbChecked
-    TabOrder = 6
-  end
-  object CheckBox19: TCheckBox
-    Left = 10
-    Height = 29
-    Top = 542
-    Width = 98
-    Caption = '--noweb'
-    ParentFont = False
-    TabOrder = 7
-  end
-  object CheckBox20: TCheckBox
-    Left = 302
-    Height = 29
-    Top = 504
-    Width = 184
-    Caption = '--noUpdateInstaller'
-    ParentFont = False
-    TabOrder = 8
-  end
-  object CheckBox21: TCheckBox
-    Left = 302
-    Height = 29
-    Top = 542
-    Width = 102
-    Caption = '--passive'
-    ParentFont = False
-    TabOrder = 9
-  end
-  object cbLanguage: TComboBox
-    Left = 91
-    Height = 33
-    Top = 504
-    Width = 102
-    ItemHeight = 25
-    ItemIndex = 10
-    Items.Strings = (
-      'cs-CZ'
-      'de-DE'
-      'en-US'
-      'es-ES'
-      'fr-FR'
-      'it-IT'
-      'ja-JP'
-      'ko-KR'
-      'pl-PL'
-      'pt-BR'
-      'ru-RU'
-      'tr-TR'
-      'zh-CN'
-      'zh-TW'
-    )
-    ParentFont = False
-    TabOrder = 10
-    Text = 'ru-RU'
-  end
-  object CheckBox22: TCheckBox
-    Left = 13
-    Height = 29
-    Top = 655
-    Width = 176
-    Caption = 'Сжать папку в Zip'
-    ParentFont = False
-    TabOrder = 11
-  end
-  object Button2: TButton
-    Left = 380
-    Height = 37
-    Top = 652
-    Width = 37
-    Caption = '?'
-    OnClick = Button2Click
-    TabOrder = 12
+  object Panel2: TPanel
+    Left = 0
+    Height = 99
+    Top = 0
+    Width = 544
+    Align = alTop
+    ClientHeight = 99
+    ClientWidth = 544
+    TabOrder = 2
+    object edVSexe: TLabeledEdit
+      AnchorSideRight.Control = SpeedButton1
+      Left = 10
+      Height = 33
+      Top = 29
+      Width = 490
+      Anchors = [akTop, akLeft, akRight]
+      EditLabel.Height = 25
+      EditLabel.Width = 490
+      EditLabel.Caption = 'Путь к файлу установки (vs_Community.exe)'
+      EditLabel.ParentColor = False
+      EditLabel.ParentFont = False
+      ParentFont = False
+      TabOrder = 0
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 500
+      Height = 34
+      Top = 29
+      Width = 35
+      Anchors = [akTop, akRight]
+      Images = ImageList1
+      ImageIndex = 0
+      OnClick = SpeedButton1Click
+      ParentFont = False
+    end
+    object Label1: TLabel
+      Left = 13
+      Height = 25
+      Top = 69
+      Width = 104
+      Caption = 'Компоненты'
+      ParentColor = False
+      ParentFont = False
+    end
   end
   object ImageList1: TImageList
     Left = 360

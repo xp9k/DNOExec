@@ -681,14 +681,15 @@ begin
      if Panel2.Visible then
        begin
         frmMain.Width := frmMain.Width + Panel2.Width;
-        frmMain.Menu := MainMenu1;
+//        frmMain.Menu := MainMenu1;
        end
      else
        begin
         frmMain.Width := frmMain.Width - Panel2.Width;
-        frmMain.Menu := nil;
+//        frmMain.Menu := nil;
        end;
     end;
+  MenuItem1.Visible := Panel2.Visible;
 end;
 
 procedure TfrmMain.VSTMouseMove(Sender: TObject; Shift: TShiftState; X,

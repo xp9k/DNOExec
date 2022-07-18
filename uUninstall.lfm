@@ -121,6 +121,14 @@ object frmUninstall: TfrmUninstall
       Caption = 'Запустить команду без обработки'
       OnClick = MenuItem1Click
     end
+    object MenuItem5: TMenuItem
+      Caption = 'Открыть в реестре'
+      OnClick = MenuItem5Click
+    end
+    object MenuItem6: TMenuItem
+      Caption = 'Удалить запись в реестре'
+      OnClick = MenuItem6Click
+    end
     object MenuItem2: TMenuItem
       Caption = 'Открыть папку'
       OnClick = MenuItem2Click

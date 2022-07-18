@@ -1,24 +1,25 @@
 object frmMain: TfrmMain
   Left = 1837
-  Height = 745
+  Height = 759
   Top = 530
   Width = 583
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'ДНО ИТ (by Яр)'
-  ClientHeight = 715
+  ClientHeight = 729
   ClientWidth = 583
   Constraints.MinHeight = 360
   Constraints.MinWidth = 384
   DesignTimePPI = 144
   Menu = MainMenu1
   OnActivate = FormActivate
+  OnClose = FormClose
   OnCreate = FormCreate
   OnResize = FormResize
   Position = poScreenCenter
   LCLVersion = '2.0.10.0'
   object VST: TVirtualStringTree
     Left = 0
-    Height = 601
+    Height = 615
     Top = 0
     Width = 384
     Align = alClient
@@ -62,7 +63,7 @@ object frmMain: TfrmMain
   object Panel1: TPanel
     Left = 0
     Height = 114
-    Top = 601
+    Top = 615
     Width = 583
     Align = alBottom
     BevelOuter = bvNone
@@ -109,24 +110,24 @@ object frmMain: TfrmMain
   end
   object Panel2: TPanel
     Left = 39
-    Height = 601
+    Height = 615
     Top = 0
     Width = 544
     Align = alRight
     BevelOuter = bvNone
-    ClientHeight = 601
+    ClientHeight = 615
     ClientWidth = 544
     ParentFont = False
     TabOrder = 2
     Visible = False
     object Panel3: TPanel
       Left = 0
-      Height = 601
+      Height = 615
       Top = 0
       Width = 55
       Align = alLeft
       BevelOuter = bvNone
-      ClientHeight = 601
+      ClientHeight = 615
       ClientWidth = 55
       Constraints.MinWidth = 55
       ParentFont = False
@@ -194,13 +195,13 @@ object frmMain: TfrmMain
     end
     object Panel4: TScrollBox
       Left = 55
-      Height = 601
+      Height = 615
       Top = 0
       Width = 489
       HorzScrollBar.Page = 412
-      VertScrollBar.Page = 597
+      VertScrollBar.Page = 611
       Align = alClient
-      ClientHeight = 597
+      ClientHeight = 611
       ClientWidth = 459
       Constraints.MinWidth = 384
       ParentFont = False
@@ -1031,7 +1032,7 @@ object frmMain: TfrmMain
   end
   object Splitter1: TSplitter
     Left = 32
-    Height = 601
+    Height = 615
     Top = 0
     Width = 7
     Align = alRight
@@ -1432,6 +1433,13 @@ object frmMain: TfrmMain
       object MenuItem5: TMenuItem
         Caption = 'Скачать Visual Studio'
         OnClick = MenuItem5Click
+      end
+    end
+    object MenuItem8: TMenuItem
+      Caption = 'Помощь'
+      object MenuItem9: TMenuItem
+        Caption = 'Лог'
+        OnClick = MenuItem9Click
       end
     end
   end

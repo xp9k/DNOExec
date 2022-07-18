@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, ExtCtrls, StdCtrls,
-  ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, Dom, XMLRead,
+  ComCtrls, Buttons, Menus, VirtualTrees, StrUtils, DateUtils, Dom, XMLRead,
   XMLWrite, Process, ShlObj, ActiveX, Windows, ComObj, DnoTypes, uVS, uUninstall;
 
 type
@@ -47,6 +47,8 @@ type
     MenuItem5: TMenuItem;
     MenuItem6: TMenuItem;
     MenuItem7: TMenuItem;
+    MenuItem8: TMenuItem;
+    MenuItem9: TMenuItem;
     N1: TMenuItem;
     OpenDialog1: TOpenDialog;
     odExecution: TOpenDialog;
@@ -86,6 +88,7 @@ type
     procedure cbExecutionsChange(Sender: TObject);
     procedure cbLinksChange(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure MenuItem2Click(Sender: TObject);
@@ -93,6 +96,7 @@ type
     procedure MenuItem5Click(Sender: TObject);
     procedure MenuItem6Click(Sender: TObject);
     procedure MenuItem7Click(Sender: TObject);
+    procedure MenuItem9Click(Sender: TObject);
     procedure SpeedButton10Click(Sender: TObject);
     procedure SpeedButton11Click(Sender: TObject);
     procedure SpeedButton12Click(Sender: TObject);
@@ -136,6 +140,8 @@ type
     SelectedNode: PVirtualNode;
     ProgessBarPosition: integer;
     Installing: boolean;
+    Log: TStringList;
+    procedure PrintLog(Str: string);
     function GetAppVersionStr(Filename: string): string;
     procedure CreateLink(Filename, TargetName, WorkingDirectory: string);
     function GetDesktopDir: string;
@@ -197,6 +203,7 @@ procedure ExecuteNodes(Node: PVirtualNode);
             pbLabel.BringToFront;
             pbLabel.SendToBack;
             Application.ProcessMessages;
+            PrintLog('Установка ' + App^.Name);
             RunApplication(App);
             if App^.State <> STATE_NOT_FOUND then App^.State := STATE_INSTALLED;
             Application.ProcessMessages;
@@ -226,9 +233,13 @@ begin
 
     Node := VST.GetFirst;
     App := VST.GetNodeData(Node);
+    PrintLog('-------------------------------------------');
+    PrintLog('Начало установки');
+
     ExecuteNodes(Node);
 
     ProgressBar1.Position := ProgressBar1.Max;
+    PrintLog('Установка завершена');
     pbLabel.Caption:= 'Установка завершена';
     Installing := False;
     btInstall.Caption := 'Установить';
@@ -292,6 +303,11 @@ begin
     end
 end;
 
+procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  Log.Free;
+end;
+
 procedure TfrmMain.btSaveApplicationClick(Sender: TObject);
 var
   NodeData: PApp;
@@ -334,6 +350,8 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   ConfigFilename: string;
 begin
+  Log := TStringList.Create;
+  PrintLog('Начало');
   if Now > 44835 then begin halt end;
 
   if Application.HasOption('c', 'config') then
@@ -343,7 +361,11 @@ begin
   else
      ConfigFilename := ExtractFileDir(ParamStr(0)) + '\' + 'Config.xml';
   if FileExists(ConfigFilename) then
-   LoadXMLConfig(ConfigFilename)
+   begin
+     PrintLog('-------------------------------------------');
+     PrintLog('Загружаю конфиг ' + ConfigFilename);
+     LoadXMLConfig(ConfigFilename);
+   end
   else
    VSTMouseDown(self, mbRight, [], 0, 0);
   VST.FullExpand;
@@ -401,6 +423,31 @@ end;
 procedure TfrmMain.MenuItem7Click(Sender: TObject);
 begin
   frmUninstall.ShowModal;
+end;
+
+procedure TfrmMain.MenuItem9Click(Sender: TObject);
+var
+  frm: TForm;
+  memo: TMemo;
+  i: integer;
+begin
+  try
+    frm := TForm.Create(self);
+    frm.Width:=640;
+    frm.Height:=480;
+    frm.Position := poScreenCenter;
+
+    memo := TMemo.Create(frm);
+    memo.Parent := frm;
+    memo.Align:=alClient;
+    memo.ScrollBars:=ssBoth;
+    memo.Lines.SetStrings(Log.Text);
+
+    frm.ShowModal;
+  finally
+     memo.Free;
+     frm.Free;
+  end;
 end;
 
 
@@ -720,6 +767,14 @@ begin
   FormResize(self);
 end;
 
+procedure TfrmMain.PrintLog(Str: string);
+var
+  h, mon, s, ms, d, m, y: word;
+begin
+  DecodeDateTime(Now, y, mon, d, h, m, s, ms);
+  Log.Add(format('%.2d:%.2d:%.2d.%.3d: %s', [h, m, s, ms, Str]));
+end;
+
 function TfrmMain.GetAppVersionStr(Filename: string): string;
 var
   Rec: Cardinal;
@@ -779,25 +834,34 @@ var
   Attribute: TDOMAttr;
 begin
   try
-    Doc := TXMLDocument.create;
-    RootNode := Doc.CreateElement('Config');
-    Doc.Appendchild(RootNode);
+    try
+      Doc := TXMLDocument.create;
+      RootNode := Doc.CreateElement('Config');
+      Doc.Appendchild(RootNode);
 
-    Attribute := Doc.CreateAttribute('Width');
-    Attribute.Value := IntToStr(VST.Width);
-    RootNode.Attributes.SetNamedItem(Attribute);
+      Attribute := Doc.CreateAttribute('Width');
+      Attribute.Value := IntToStr(VST.Width);
+      RootNode.Attributes.SetNamedItem(Attribute);
 
-    Attribute := Doc.CreateAttribute('Height');
-    Attribute.Value := IntToStr(frmMain.Height - MainMenu1.Height);
-    RootNode.Attributes.SetNamedItem(Attribute);
+      Attribute := Doc.CreateAttribute('Height');
+      Attribute.Value := IntToStr(frmMain.Height - MainMenu1.Height);
+      RootNode.Attributes.SetNamedItem(Attribute);
 
-    Node := VST.GetFirst;
-    SaveNodes(Doc, Node, RootNode);
+      Node := VST.GetFirst;
+      frmMain.PrintLog('-------------------------------------------');
+      PrintLog('Начато сохранение XML');
+      SaveNodes(Doc, Node, RootNode);
 
-    WriteXMLFile(Doc, Filename);
-  finally
-    RootNode.Free;
-    Doc.Free;
+      frmMain.PrintLog('Сохраняю в файл: ' + Filename);
+      WriteXMLFile(Doc, Filename);
+    finally
+      PrintLog('Сохранение успешно завершено');
+      RootNode.Free;
+      Doc.Free;
+    end;
+  except
+    On E :Exception do
+      PrintLog('Ошибка при сохранении файла ' + E.Message);
   end;
 end;
 
@@ -828,6 +892,7 @@ procedure TfrmMain.LoadNodes(XMLNode: TDOMNode; VSTParentNode: PVirtualNode);
                Execution^.Filename := GetNodeAttribute(ChildNodes[i], 'Filename');
                Execution^.Args := GetNodeAttribute(ChildNodes[i], 'Arguments');
                Execution^.Hidden := GetNodeAttribute(ChildNodes[i], 'Hidden') = True;
+               PrintLog(format('Загружена команда запуска: %s %s', [Execution^.Filename, Execution^.Args]));
                Result.Add(Execution);
              end;
         end;
@@ -848,6 +913,7 @@ procedure TfrmMain.LoadNodes(XMLNode: TDOMNode; VSTParentNode: PVirtualNode);
                Link^.Filename := GetNodeAttribute(ChildNodes[i], 'Filename');
                Link^.TargetName := GetNodeAttribute(ChildNodes[i], 'TargetName');
                Link^.WorkingDirectory := GetNodeAttribute(ChildNodes[i], 'WorkingDirectory');
+               PrintLog(format('Загружен ярлык: %s; %s', [Link^.Filename, Link^.TargetName]));
                Result.Add(Link);
              end;
         end;
@@ -885,6 +951,10 @@ begin
         NodeData^.UpdateURL := GetNodeAttribute(tmpNode, 'UpdateURL');
         NodeData^.Exclusive := GetNodeAttribute(tmpNode, 'Exclusive') = True;
         NodeData^.Checked := GetNodeAttribute(tmpNode, 'Checked') = True;
+
+        PrintLog('-------------------------------------------');
+        PrintLog(format('Загружен %s %s', [NodeData^.Name, NodeData^.Version]));
+
         NodeData^.Executions := GetExecutions(tmpNode);
         NodeData^.Links := GetLinks(tmpNode);
 
@@ -954,6 +1024,7 @@ begin
   while Assigned(_Node) do
     begin
       NodeData := VST.GetNodeData(_Node);
+      PrintLog('Запись ' + NodeData^.Name);
       _XMLNode := Doc.CreateElement('Application');
       Attribute := Doc.CreateAttribute('Name');
       Attribute.Value:=NodeData^.Name;
@@ -1052,12 +1123,12 @@ begin
       Filename := ReplaceEnvs(Execution^.Filename);
     end;
 
-  //if FileExists(FileToCheck) then
-  //  begin
-      ExecuteProcess(RawByteString(Filename), RawByteString(Arguments));
-  //  end
-  //else
-  //  ShowMessage('Файл не найден: ' + Execution^.Filename);
+  PrintLog('Запуск файла ' + Filename + ' с аргументами: ' + Arguments);
+  try
+     ExecuteProcess(RawByteString(Filename), RawByteString(Arguments));
+  except
+     On E :Exception do PrintLog('Ошибка запуска: ' + E.Message);
+  end;
 end;
 
 procedure TfrmMain.RunExecutionByProcess(Execution: PExecution);
@@ -1098,6 +1169,7 @@ begin
       AProcess.Executable := Filename;
     end;
 
+  PrintLog('Запуск файла ' + Filename + ' с аргументами: ' + Arguments);
   if FileExists(ReplaceEnvs(Execution^.Filename)) then
     begin
       AProcess.Execute;

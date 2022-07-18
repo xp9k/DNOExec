@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ComCtrls, Menus, VirtualTrees, Windows, Registry, StrUtils, DnoTypes;
+  ComCtrls, Menus, VirtualTrees, Windows, Registry, StrUtils, Process, DnoTypes;
 
 type
 
@@ -19,6 +19,8 @@ type
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     MenuItem4: TMenuItem;
+    MenuItem5: TMenuItem;
+    MenuItem6: TMenuItem;
     Panel1: TPanel;
     Panel2: TPanel;
     pm: TPopupMenu;
@@ -32,6 +34,8 @@ type
     procedure MenuItem2Click(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure MenuItem4Click(Sender: TObject);
+    procedure MenuItem5Click(Sender: TObject);
+    procedure MenuItem6Click(Sender: TObject);
     procedure pmPopup(Sender: TObject);
     procedure VSTBeforeCellPaint(Sender: TBaseVirtualTree;
       TargetCanvas: TCanvas; Node: PVirtualNode; Column: TColumnIndex;
@@ -52,8 +56,9 @@ type
     procedure VSTResize(Sender: TObject);
   private
     UninstallProgress: integer;
-    procedure ScanForApplications;
-    procedure ParseUninstallString(var Uninstall: PUninstall);
+    procedure ScanForApplications(WriteToLog: boolean = False);
+    procedure ParseUninstallString(var Uninstall: PUninstall; WriteToLog: boolean = False);
+    procedure RunProcess(Filename: string; Arguments: TStringArray; Options: TProcessOptions);
   public
 
   end;
@@ -87,7 +92,9 @@ procedure ExecuteNodes(Node: PVirtualNode);
             ProgressBar1.Position := UninstallProgress;
             StatusBar1.SimpleText := 'Удаляется ' + Uninstall^.DisplayName + ' ' + Uninstall^.Version;
             Application.ProcessMessages;
-            ExecuteProcess(RawByteString(Uninstall^.FilePath), RawByteString(Uninstall^.Args));
+            frmMain.PrintLog('Удаляется ' + Uninstall^.DisplayName + ' ' + Uninstall^.Version);
+//            ExecuteProcess(RawByteString(Uninstall^.FilePath), RawByteString(Uninstall^.Args));
+            RunProcess(Uninstall^.FilePath, Uninstall^.ArgsList, [poWaitOnExit]);
 //            sleep(2000);
           end;
         _Node := VST.GetNextSibling(_Node);
@@ -96,10 +103,12 @@ procedure ExecuteNodes(Node: PVirtualNode);
 var
   Node: PVirtualNode;
 begin
-  UninstallProgress := 0;
-  ProgressBar1.Position:=0;
+  UninstallProgress := 1;
+  ProgressBar1.Position:=1;
   ProgressBar1.Max := VST.CheckedCount;
   Node := VST.GetFirst;
+  frmMain.PrintLog('-------------------------------------------');
+  frmMain.PrintLog('Начато удаление');
   ExecuteNodes(Node);
   ProgressBar1.Position:=ProgressBar1.Max;
   StatusBar1.SimpleText := '';
@@ -113,7 +122,7 @@ end;
 
 procedure TfrmUninstall.FormShow(Sender: TObject);
 begin
-  ScanForApplications;
+  ScanForApplications(True);
 end;
 
 procedure TfrmUninstall.MenuItem1Click(Sender: TObject);
@@ -121,6 +130,9 @@ procedure ExecuteNodes(Node: PVirtualNode);
   var
     _Node: PVirtualNode;
     Uninstall: PUninstall;
+    AProcess: TProcess;
+    ShowWindowOptions: TShowWindowOptions;
+    i: integer;
   begin
     _Node := Node;
     if Assigned(_Node) then
@@ -129,15 +141,29 @@ procedure ExecuteNodes(Node: PVirtualNode);
         inc(UninstallProgress);
         ProgressBar1.Position := UninstallProgress;
         StatusBar1.SimpleText := 'Удаляется ' + Uninstall^.DisplayName + ' ' + Uninstall^.Version;
-        Application.ProcessMessages;
-        ExecuteProcess(RawByteString(Uninstall^.UninstallString), '');
+
+        AProcess := TProcess.Create(nil);
+        AProcess.Options := [poWaitOnExit];
+
+        AProcess.Executable := Uninstall^.UninstallString;
+
+        try
+          AProcess.Execute;
+        except
+          On E :Exception do
+             begin
+               frmMain.PrintLog('Ошибка запуска: ' + E.Message);
+               Application.MessageBox(PChar('Произошла ошибка при запуске файла: ' + E.Message), 'Ошибка', MB_ICONERROR);
+             end;
+        end;
+        AProcess.Free;
       end;
   end;
 var
   Node: PVirtualNode;
 begin
-  UninstallProgress := 0;
-  ProgressBar1.Position:=0;
+  UninstallProgress := 1;
+  ProgressBar1.Position :=1 ;
   ProgressBar1.Max := VST.CheckedCount;
   Node := VST.FocusedNode;
   if Assigned(Node) then
@@ -188,7 +214,42 @@ end;
 
 procedure TfrmUninstall.MenuItem4Click(Sender: TObject);
 begin
-  ScanForApplications;
+  ScanForApplications(True);
+end;
+
+procedure TfrmUninstall.MenuItem5Click(Sender: TObject);
+var
+  NodeData: PUninstall;
+  reg: TRegistry;
+begin
+  reg := TRegistry.Create;
+  NodeData := VST.GetNodeData(VST.FocusedNode);
+  try
+     reg.RootKey:=HKEY_CURRENT_USER;
+     reg.OpenKey('\Software\Microsoft\Windows\CurrentVersion\Applets\Regedit\', true);
+     reg.WriteString('LastKey', HKEYToStr(NodeData^.RegRootKey) + NodeData^.RegPath);
+     RunProcess('regedit.exe', nil, []);
+  finally
+    reg.Free;
+  end;
+end;
+
+procedure TfrmUninstall.MenuItem6Click(Sender: TObject);
+var
+  NodeData: PUninstall;
+  reg: TRegistry;
+begin
+  NodeData := VST.GetNodeData(VST.FocusedNode);
+  if Application.MessageBox(PChar('Действительно удалить ключ ' + HKEYToStr(NodeData^.RegRootKey) + NodeData^.RegPath), 'ВНИМАНИЕ', MB_YESNO + MB_ICONWARNING) <> IDYES then exit;
+  reg := TRegistry.Create;
+  try
+     reg.RootKey:=NodeData^.RegRootKey;
+     if not reg.DeleteKey(NodeData^.RegPath) then
+      Application.MessageBox('Ошибка удаления ключа реестра', 'Ошибка', MB_ICONERROR);
+  finally
+    reg.Free;
+    ScanForApplications;
+  end;
 end;
 
 procedure TfrmUninstall.pmPopup(Sender: TObject);
@@ -309,7 +370,7 @@ begin
   VST.Header.Columns[2].Width := VST.Width - (VST.Header.Columns[0].Width + VST.Header.Columns[1].Width + GetSystemMetrics(SM_CXVSCROLL) + 5);
 end;
 
-procedure TfrmUninstall.ScanForApplications;
+procedure TfrmUninstall.ScanForApplications(WriteToLog: boolean = False);
 
 procedure ScanKey(RootKey: HKEY; Key: string);
 var
@@ -325,6 +386,11 @@ begin
      reg.RootKey := RootKey;
      reg.OpenKey(Key, false);
      reg.GetKeyNames(keys);
+     if WriteToLog then
+      begin
+       frmMain.PrintLog('-------------------------------------------');
+       frmMain.PrintLog('Сканирую ветку ' + HKEYToStr(RootKey) + '\' + Key);
+      end;
      for i := 0 to keys.Count - 1 do
       begin
          reg.CloseKey;
@@ -333,14 +399,26 @@ begin
             begin
              Node := VST.AddChild(nil);
              NodeData := VST.GetNodeData(Node);
+             NodeData^.RegRootKey := RootKey;
+             NodeData^.RegPath := '\' + Key + '\' + keys[i];
              NodeData^.DisplayName := reg.ReadString('DisplayName');
              NodeData^.Version := reg.ReadString('DisplayVersion');
              if reg.ValueExists('QuietUninstallString') then
                NodeData^.UninstallString := reg.ReadString('QuietUninstallString')
              else
                NodeData^.UninstallString := reg.ReadString('UninstallString');
-            end;
-         ParseUninstallString(NodeData);
+             if WriteToLog then
+              begin
+                frmMain.PrintLog('-------------------------------------------');
+                frmMain.PrintLog('Найдено приложение');
+                frmMain.PrintLog(NodeData^.DisplayName);
+                frmMain.PrintLog(NodeData^.Version);
+                frmMain.PrintLog(HKEYToStr(RootKey) + '\' + NodeData^.RegPath);
+                frmMain.PrintLog(NodeData^.UninstallString);
+              end;
+            ParseUninstallString(NodeData, WriteToLog);
+           end;
+
       end;
   finally
     reg.Free;
@@ -349,8 +427,8 @@ begin
 end;
 
 begin
-  VST.Clear;
   VST.BeginUpdate;
+  VST.Clear;
 
   ScanKey(HKEY_CURRENT_USER, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall');
   ScanKey(HKEY_LOCAL_MACHINE, 'SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall');
@@ -360,40 +438,135 @@ begin
 end;
 
 
-procedure TfrmUninstall.ParseUninstallString(var Uninstall: PUninstall);
+procedure TfrmUninstall.ParseUninstallString(var Uninstall: PUninstall; WriteToLog: boolean = False);
+function SystemPath: string;
+begin
+    SetLength(Result, MAX_PATH);
+    SetLength(Result, GetSystemDirectory(@Result[1], MAX_PATH));
+end;
 var
   args: TStringArray;
-  Delimiter: char;
+  Delimiter: string;
+  i: integer;
 begin
-  if Uninstall^.UninstallString.Contains('MsiExec') then
+  if WriteToLog then
+     frmMain.PrintLog('Начало парсинга');
+  if ContainsText(Uninstall^.UninstallString, 'MsiExec') then
    begin
-     Uninstall^.UninstallString := Uninstall^.UninstallString.Replace('/I', '/X');
-     args := Uninstall^.UninstallString.Split('/');
-     if Length(args) > 1 then
+//     Uninstall^.UninstallString := Uninstall^.UninstallString.Replace('/I', '/X').Replace('MsiExec.exe', SystemPath + '\msiexec.exe');
+     Uninstall^.ArgsList := Uninstall^.UninstallString.Split('/');
+     if Length(Uninstall^.ArgsList) > 1 then
       begin
-        Uninstall^.FilePath := args[0];
-        args := Copy(args, 1, Length(args) - 1);
-        Uninstall^.Args := '/' + AnsiString.Join('/', args);
-        if not ContainsText(Uninstall^.Args, '/qn') then Uninstall^.Args += ' /qn';
-        if not ContainsText(Uninstall^.Args, '/norestart') then Uninstall^.Args += ' /norestart';
+        Uninstall^.FilePath := Uninstall^.ArgsList[0].Replace('MsiExec.exe', SystemPath + '\msiexec.exe');
+        for i := 1 to Length(Uninstall^.ArgsList) - 1 do
+          Uninstall^.ArgsList[i - 1] := '/' + Uninstall^.ArgsList[i].Trim;
+
+        SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) - 1);
+
+        Uninstall^.ArgsList[0] :=Uninstall^.ArgsList[0].Replace('/I', '/X');
+        if not ContainsText(Uninstall^.UninstallString, '/qn') then
+         begin
+           SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+           Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := '/qn';
+         end;
+        if not ContainsText(Uninstall^.UninstallString, '/norestart') then
+         begin
+           SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+           Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := '/norestart';
+         end;
       end;
    end
   else
    begin
-    if ContainsText(Uninstall^.UninstallString, '--') then Delimiter := '-' else Delimiter := '/';
-    args := Uninstall^.UninstallString.Split(Delimiter);
-    if Length(args) > 1 then
+
+    if ContainsText(Uninstall^.UninstallString, '/') then Delimiter := '/' else if ContainsText(Uninstall^.UninstallString, '--') then Delimiter := '--' else Delimiter := '-';
+    Uninstall^.ArgsList := Uninstall^.UninstallString.Split(Delimiter);
+    Uninstall^.FilePath := Uninstall^.ArgsList[0].Replace('"', '').Trim;
+    if Length(Uninstall^.ArgsList) > 1 then
      begin
-      Uninstall^.FilePath := args[0];
-      args := Copy(args, 1, Length(args) - 1);
-      Uninstall^.Args := Delimiter + AnsiString.Join(Delimiter, args);
+       for i := 1 to Length(Uninstall^.ArgsList) - 1 do
+         Uninstall^.ArgsList[i - 1] := Delimiter + Uninstall^.ArgsList[i].Trim;
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) - 1);
+     end
+    else
+     begin
      end;
-    if not ContainsText(Uninstall^.Args, Delimiter + 'quiet') then Uninstall^.Args += ' ' + Delimiter + 'quiet';
-    if not ContainsText(Uninstall^.Args, Delimiter + 'S') then Uninstall^.Args += ' ' + Delimiter + 'S';
-    if not ContainsText(Uninstall^.Args, Delimiter + 'SILENT') then Uninstall^.Args += ' ' + Delimiter + 'SILENT';
-    if not ContainsText(Uninstall^.Args, Delimiter + 'AUTO') then Uninstall^.Args += ' ' + Delimiter + 'AUTO';
-    if not ContainsText(Uninstall^.Args, Delimiter + 'NORESTART') then Uninstall^.Args += ' ' + Delimiter + 'NORESTART';
+
+    if not ContainsText(Uninstall^.UninstallString, Delimiter + 'quiet') then
+      begin
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+       Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := Delimiter + 'quiet';
+      end;
+
+    if not ContainsText(Uninstall^.UninstallString, Delimiter + 'S') then
+      begin
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+       Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := Delimiter + 'S';
+      end;
+
+    if not ContainsText(Uninstall^.UninstallString, Delimiter + 'SILENT') then
+      begin
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+       Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := Delimiter + 'SILENT';
+      end;
+
+    if not ContainsText(Uninstall^.UninstallString, Delimiter + 'AUTO') then
+      begin
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+       Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := Delimiter + 'AUTO';
+      end;
+
+    if not ContainsText(Uninstall^.UninstallString, Delimiter + 'NORESTART') then
+      begin
+       SetLength(Uninstall^.ArgsList, Length(Uninstall^.ArgsList) + 1);
+       Uninstall^.ArgsList[length(Uninstall^.ArgsList) - 1] := Delimiter + 'NORESTART';
+      end;
+    //if not ContainsText(Uninstall^.Args, Delimiter + 'quiet') then Uninstall^.Args += ' ' + Delimiter + 'quiet';
+    //if not ContainsText(Uninstall^.Args, Delimiter + 'S') then Uninstall^.Args += ' ' + Delimiter + 'S';
+    //if not ContainsText(Uninstall^.Args, Delimiter + 'SILENT') then Uninstall^.Args += ' ' + Delimiter + 'SILENT';
+    //if not ContainsText(Uninstall^.Args, Delimiter + 'AUTO') then Uninstall^.Args += ' ' + Delimiter + 'AUTO';
+    //if not ContainsText(Uninstall^.Args, Delimiter + 'NORESTART') then Uninstall^.Args += ' ' + Delimiter + 'NORESTART';
    end;
+   if WriteToLog then
+     begin
+       frmMain.PrintLog('Разделитель: ' + Delimiter);
+       frmMain.PrintLog('Строка после парсинга: ' + AnsiString.Join(' ', Uninstall^.ArgsList));
+       frmMain.PrintLog('Конец парсинга');
+     end;
+end;
+
+procedure TfrmUninstall.RunProcess(Filename: string; Arguments: TStringArray; Options: TProcessOptions);
+var
+  AProcess: TProcess;
+  ShowWindowOptions: TShowWindowOptions;
+  i: integer;
+begin
+  AProcess := TProcess.Create(nil);
+
+  AProcess.Options := Options;
+
+  //if Execution^.Hidden then
+  //  ShowWindowOptions := swoHIDE;
+
+//  AProcess.ShowWindow := ShowWindowOptions;
+
+  for i := 0 to Length(Arguments) - 1 do
+      AProcess.Parameters.Add(Arguments[i]);
+  AProcess.Executable := Filename;
+//  AProcess.CurrentDirectory := ExtractFileDir(Filename);
+
+  frmMain.PrintLog('Запуск процесса ' + format('%s %s', [Filename, AnsiString.Join(' ', Arguments)]));
+  try
+    AProcess.Execute;
+  except
+    On E :Exception do
+       begin
+            frmMain.PrintLog('Произошла ошибка при запуске файла: ' + E.Message);
+            Application.MessageBox(PChar('Произошла ошибка при запуске файла: ' + E.Message), 'Ошибка', MB_ICONERROR);
+       end;
+  end;
+
+  AProcess.Free;
 end;
 
 end.

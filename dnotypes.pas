@@ -5,7 +5,7 @@ unit DnoTypes;
 interface
 
 uses
-    Classes;
+    Classes, Windows;
 
 type
 
@@ -38,15 +38,33 @@ end;
 
 PUninstall = ^TUninstall;
 TUninstall = record
+  RegRootKey: HKEY;
+  RegPath: string;
   DisplayName: string;
   Version: string;
   UninstallString: string;
   FilePath: string;
   Args: string;
+  ArgsList: array of string;
 end;
+
+const
+  HKEYNames: array[0..6] of string =
+    ('HKEY_CLASSES_ROOT', 'HKEY_CURRENT_USER', 'HKEY_LOCAL_MACHINE', 'HKEY_USERS',
+    'HKEY_PERFORMANCE_DATA', 'HKEY_CURRENT_CONFIG', 'HKEY_DYN_DATA');
+
+function HKEYToStr(const Key: HKEY): string;
 
 
 implementation
+
+function HKEYToStr(const Key: HKEY): string;
+begin
+  if (key > HKEY_CLASSES_ROOT + 6) then
+    Result := ''
+  else
+    Result := HKEYNames[key - HKEY_CLASSES_ROOT];
+end;
 
 end.
 
